@@ -17,7 +17,7 @@ typedef struct {
 	uint32_t subchunk1Size;	// 4, "16" = 0x1000 0000
 	uint16_t audioFormat;	// 2, "1"  = 0x0100
 	uint16_t numChannels;	// 2
-	uint32_t sampleRate;	// 4, "44100" = 0x0200 44ac
+	uint32_t sampleRate;	// 4, "44100" = 0x0200 44ac	Hz
 	uint32_t byteRate;	// 4, "176400" = 0x000010b1
 	uint16_t blockAlign;	// 2
 	uint16_t bitsPerSample;	// 2
@@ -74,6 +74,50 @@ void printWavHeader(WavHeader *header) {
 	// Subchunks Data
 	printf("\nSubchunk2 ID: %.4s\n", header->subchunk2Id);
 	printf("Subchunk2 Size: %u\n", header->subchunk2Size);
+}
+
+int char2digit(char in_char){
+	return in_char - '0';  
+}
+
+float HHMMSS_to_seconds(const char* time){
+
+	char *last_colon_ptr = strrchr(time, ':');
+	if (last_colon_ptr != NULL) {
+		float result_seconds = atof(last_colon_ptr+1);
+
+		last_colon_ptr--;
+		result_seconds += char2digit(*last_colon_ptr) * 60;
+		last_colon_ptr--;
+		if (last_colon_ptr - time == -1)
+			return result_seconds;
+		
+		if (*last_colon_ptr != ':'){
+			result_seconds += char2digit(*last_colon_ptr) * 10 * 60;
+			last_colon_ptr--;
+		}
+		
+		if (last_colon_ptr - time == -1)
+			return result_seconds;
+
+		last_colon_ptr--;
+		result_seconds += char2digit(*last_colon_ptr) * 3600;
+		last_colon_ptr--;
+		if (last_colon_ptr - time == -1)
+			return result_seconds;
+
+		result_seconds += char2digit(*last_colon_ptr) * 10 * 3600;
+		return result_seconds;
+		
+	} else {
+		return atof(time);
+	}
+}
+
+uint32_t seconds_to_bytes_count(float time, WavHeader *header){
+	if (time == -1)
+		return header->chunkSize - calc_header_size(header);;
+	return  (uint32_t)(time * header->byteRate);
 }
 #endif /* READ_WAV_H */
 
