@@ -19,8 +19,8 @@ typedef struct {
 	uint16_t numChannels;	// 2
 	uint32_t sampleRate;	// 4, "44100" = 0x0200 44ac	Hz
 	uint32_t byteRate;	// 4, "176400" = 0x000010b1
-	uint16_t blockAlign;	// 2
-	uint16_t bitsPerSample;	// 2
+	uint16_t blockAlign;	// 2, "4"
+	uint16_t bitsPerSample;	// 2, "16"
 	
 	char subchunk2Id[4];	// 4, in simple "data", maybe others for example "LIST"
 	uint32_t subchunk2Size;	// 4
@@ -115,9 +115,12 @@ float HHMMSS_to_seconds(const char* time){
 }
 
 uint32_t seconds_to_bytes_count(float time, WavHeader *header){
+	uint32_t result;
 	if (time == -1)
-		return header->chunkSize - calc_header_size(header);;
-	return  (uint32_t)(time * header->byteRate);
+		result = header->chunkSize - calc_header_size(header);
+	else
+		result = time * header->byteRate;
+	return  result - (result % header->blockAlign);
 }
 #endif /* READ_WAV_H */
 
