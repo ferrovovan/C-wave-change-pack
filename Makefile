@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -Wall -Wextra -std=c99 -o0
 
 SRCDIR = source
 BINDIR = bin
@@ -19,8 +19,8 @@ slowed_wav: $(SRCDIR)/slowed_wav.c
 wav_info: $(SRCDIR)/wav_info.c
 	$(CC) $(CFLAGS) -o wav_info $(SRCDIR)/wav_info.c
 
-1_hour_wav: $(SRCDIR)/1_hour_wav.c
-	$(CC) $(CFLAGS) -o 1_hour_extender.out $(SRCDIR)/1_hour_wav.c
+1_hour_wav: $(SRCDIR)/1_hour_wav/1_hour_wav.c
+	$(CC) $(CFLAGS) -o 1_hour_extender.out $(SRCDIR)/1_hour_wav/1_hour_wav.c
 
 all: boosted_wav concat_wav mult_wav slowed_wav wav_info 1_hour_wav
 
