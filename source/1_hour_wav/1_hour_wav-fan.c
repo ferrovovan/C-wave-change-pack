@@ -120,44 +120,17 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		// формирование буфера
 		uint8_t *mix_buffer = (uint8_t *)malloc(mix_dlit_bytes_count);
 		
-		float progress;
+		double first_num, second_num, progress;
 	
 		fseek(inputFile, ptr_end_rep - (uintptr_t)mix_dlit_bytes_count, SEEK_SET);
 		fread(mix_buffer, mix_dlit_bytes_count, sizeof(uint8_t), inputFile);
 
 		
-		if (header_in.bitsPerSample == 8){
-		uint8_t first_num, second_num;
-		for (unsigned int i = 0; i < mix_dlit_bytes_count/2; ++i) {
-			progress = (float)i / mix_dlit_bytes_count;
-			first_num = mix_buffer[i] * progress;
-			//first_num = mix_buffer[i];
-
-			second_num = buffer[i] * (1 - progress);
-
-			//first_num = 0;
-			second_num = 0;
-			mix_buffer[i] = (first_num + second_num) / 2;
-			//mix_buffer[i] = first_num + second_num;
-		}
-		} else if (header_in.bitsPerSample == 16){
-		uint16_t first_num, second_num, result;
-		for (unsigned int i = 0; i < mix_dlit_bytes_count/2; i+=2) {
-			progress = (float)(i*2) / mix_dlit_bytes_count;
-			first_num = uint8_to_uint16(mix_buffer[i+1], mix_buffer[i]) / 2/** progress*/;
-			printf("before=%d, after=%d\n", first_num, first_num - 1024 );
-			
-			second_num = uint8_to_uint16(buffer[i+1], buffer[i]) * (1 - progress);
-
-			//first_num = 0;
-			second_num = 0;
-			result = (first_num + second_num);
-
-			mix_buffer[i+1] = (uint8_t)(result >> 8);
-			mix_buffer[i] = (uint8_t)result;
-		}
-		} else{
-			printf("Не поддерживаемая разрядность семплов (bitsPerSample).\n");
+		for (uint32_t i = 0; i < mix_dlit_bytes_count; ++i) {
+			progress = (double)i / mix_dlit_bytes_count;
+			first_num = (double)mix_buffer[i] * progress;
+			second_num = (double)buffer[i] * (1 - progress);
+			mix_buffer[i] = (uint8_t)((first_num + second_num) / 14.0f);
 		}
 		
 		// запись повтора
@@ -187,7 +160,7 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 
 int main(int argc, char *argv[]) {
 
-	char *in = NULL, *out = NULL, *start_rep = NULL, *end_rep = NULL, *mix_dlit = NULL, *expected_dur = NULL;
+	char *in=NULL, *start_rep=NULL, *end_rep=NULL, *mix_dlit=NULL, *expected_dur=NULL, *out=NULL;
 	short test=0;
 
 	int code = read_params(argc, argv, &in, &out, &start_rep, &end_rep, &mix_dlit, &expected_dur, &test);
@@ -199,7 +172,6 @@ int main(int argc, char *argv[]) {
 			perror("Ошибка открытия входного файла");
 			return -1;
 		}
-		
 		FILE *outputFile;
 		if (test == 0){
 			outputFile = fopen(out, "wb");
