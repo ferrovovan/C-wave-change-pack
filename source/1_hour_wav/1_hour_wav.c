@@ -4,9 +4,7 @@
 #include "read_args.c"
 #include <string.h>
 
-uint16_t uint8_to_uint16(uint8_t val1, uint8_t val2) {
-	return ( (uint16_t)val1 << 8) | val2;
-}
+
 
 WavHeader create_HourHeader(WavHeader *header_in, uint32_t result_bytes) {
 	WavHeader hourHeader = *header_in;  // Копируем все поля из входного заголовка
@@ -31,6 +29,7 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		printf("\nfirst header:\n");
 		printWavHeader(&header_in);
 	}
+	printf("\n");
 
 
 #define CALCULATE_BYTES_COUNT(prefix, default_dur) \
@@ -42,34 +41,47 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		prefix##_bytes_count = seconds_to_bytes_count(default_dur, &header_in); \
 	}
 
-	printf("\n");
+
 	CALCULATE_BYTES_COUNT(start_rep, 0);
 	CALCULATE_BYTES_COUNT(end_rep, -1);
 
 	const uintptr_t ptr_start = (uintptr_t)calc_header_size(&header_in);
 	const uintptr_t ptr_start_rep = (uintptr_t)start_rep_bytes_count + calc_header_size(&header_in);
 	const uintptr_t ptr_end_rep = (uintptr_t)end_rep_bytes_count + calc_header_size(&header_in);
+	if (ptr_end_rep < ptr_start_rep){
+		printf("Конец повтора раньше начала. Увеличьте параметр -end или уменьшите параметр -st.\n");
+		return -1;
+	}
+	const uint32_t rep_dlit_bytes_count = end_rep_bytes_count -  start_rep_bytes_count;
+
 
 	CALCULATE_BYTES_COUNT(mix_dlit, 0);
-	CALCULATE_BYTES_COUNT(expected_dur, 3600);
-	if (expected_dur_bytes_count < header_in.chunkSize - calc_header_size(&header_in) ){
-		perror("Ожидаемая длительность меньше длительности входного файла. Увеличьте параметр -ed.\n");
-		expected_dur_bytes_count = header_in.chunkSize - calc_header_size(&header_in);
-	}
 
-	const uint32_t rep_dlit_bytes_count = end_rep_bytes_count -  start_rep_bytes_count;
 	if (rep_dlit_bytes_count < mix_dlit_bytes_count){
 		perror("Буферная зона слишком велика. Уменьшите параметр -md.\n");
 		return -1;
 	}
-	const uint32_t rep_dlit_without_mix_bytes_count = rep_dlit_bytes_count - mix_dlit_bytes_count;
-
+	uint32_t rep_dlit_without_mix_bytes_count;
+	if (rep_dlit_bytes_count < 2*mix_dlit_bytes_count)
+		rep_dlit_without_mix_bytes_count = 0;
+	else
+		rep_dlit_without_mix_bytes_count = rep_dlit_bytes_count - 2*mix_dlit_bytes_count;
 	
+	
+	CALCULATE_BYTES_COUNT(expected_dur, 3600);
+	if (expected_dur_bytes_count < header_in.chunkSize - calc_header_size(&header_in) ){
+		perror("Ожидаемая длительность меньше длительности входного файла. Увеличьте параметр -ed.\n");
+		return -1;
+	}
+
+
+
 
 	const uint32_t end_bytes_count = (header_in.chunkSize - calc_header_size(&header_in) - end_rep_bytes_count);
 
 	const int counts   =   (expected_dur_bytes_count - start_rep_bytes_count - end_bytes_count ) / rep_dlit_bytes_count;
 	const uint32_t result_bytes = start_rep_bytes_count + end_bytes_count + counts * rep_dlit_bytes_count;
+
 
 	if (info){
 		fclose(inputFile);
@@ -87,6 +99,9 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		
 		printf("\nTime block:\n");
 		printf("counts = %d;\n", counts);
+		float time = bytes_count_to_seconds(result_bytes, &header_in);
+		printf("duration = %f seconds;\n", time);
+		
 		
 		printf("\nУспешная проверка параметров.\n");
 		return 0;
@@ -97,10 +112,11 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 			printf("\nhour Header\n");
 			printWavHeader(&hourHeader);
 		}
-	
-		
+
+
 		// Запись нового заголовка в выходной файл
 		fwrite(&hourHeader, sizeof(WavHeader), 1, outputFile);
+
 
 
 		/* алгоритм */
@@ -113,60 +129,90 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		free(buffer);
 
 		// povtor
-		buffer = (uint8_t *)malloc(rep_dlit_without_mix_bytes_count);
-		fseek(inputFile,  ptr_start_rep, SEEK_SET);
-		fread(buffer, rep_dlit_without_mix_bytes_count, sizeof(uint8_t), inputFile);
-		
-		// формирование буфера
-		uint8_t *mix_buffer = (uint8_t *)malloc(mix_dlit_bytes_count);
-		
-		float progress;
-	
-		fseek(inputFile, ptr_end_rep - (uintptr_t)mix_dlit_bytes_count, SEEK_SET);
-		fread(mix_buffer, mix_dlit_bytes_count, sizeof(uint8_t), inputFile);
+		uint8_t *start_buffer, *end_buffer, *mix_buffer;
 
+		start_buffer = (uint8_t *)malloc(mix_dlit_bytes_count);
+		fseek(inputFile,  ptr_start_rep , SEEK_SET);
+		fread(start_buffer, sizeof(uint8_t), mix_dlit_bytes_count, inputFile);
+
+		buffer = (uint8_t *)malloc(rep_dlit_without_mix_bytes_count);
+		fseek(inputFile,  ptr_start_rep + mix_dlit_bytes_count , SEEK_SET);
+		fread(buffer, sizeof(uint8_t), rep_dlit_without_mix_bytes_count,  inputFile);
+		
+		end_buffer = (uint8_t *)malloc(mix_dlit_bytes_count);
+		fseek(inputFile,  ptr_end_rep - mix_dlit_bytes_count , SEEK_SET);
+		fread(end_buffer, sizeof(uint8_t), mix_dlit_bytes_count, inputFile);
+		
+		mix_buffer = (uint8_t *)malloc(mix_dlit_bytes_count);
+
+
+		float progress;
+		int volume_i;
 		
 		if (header_in.bitsPerSample == 8){
-		uint8_t first_num, second_num;
-		for (unsigned int i = 0; i < mix_dlit_bytes_count/2; ++i) {
+
+		int8_t start_num, end_num, result;
+		for (unsigned int i = 0; i < mix_dlit_bytes_count; ++i) {
+
+			start_num = start_buffer[i];
+			end_num   = end_buffer[i];
+			
+			
 			progress = (float)i / mix_dlit_bytes_count;
-			first_num = mix_buffer[i] * progress;
-			//first_num = mix_buffer[i];
+			volume_i = (progress * 256 + 0.5);
+			start_num = ((int64_t)start_num * volume_i + 128) >> 8;
 
-			second_num = buffer[i] * (1 - progress);
+			progress = 1 - (float)i / mix_dlit_bytes_count;
+			volume_i = (progress * 256 + 0.5);
+			end_num = ((int64_t)end_num * volume_i + 128) >> 8;
 
-			//first_num = 0;
-			second_num = 0;
-			mix_buffer[i] = (first_num + second_num) / 2;
-			//mix_buffer[i] = first_num + second_num;
+
+			result = (start_num + end_num) / 2;
+			mix_buffer[i] = result;
 		}
 		} else if (header_in.bitsPerSample == 16){
-		uint16_t first_num, second_num, result;
-		for (unsigned int i = 0; i < mix_dlit_bytes_count/2; i+=2) {
-			progress = (float)(i*2) / mix_dlit_bytes_count;
-			first_num = uint8_to_uint16(mix_buffer[i+1], mix_buffer[i]) / 2/** progress*/;
-			printf("before=%d, after=%d\n", first_num, first_num - 1024 );
+
+		int16_t start_num=0, end_num=0, result;
+		
+		for (uint32_t i = 0; i < mix_dlit_bytes_count; i+=2) {
+			start_num = ((int16_t)start_buffer[i+1] << 8) | start_buffer[i];
+			end_num   = ((int16_t)end_buffer[i+1]   << 8) | end_buffer[i];
 			
-			second_num = uint8_to_uint16(buffer[i+1], buffer[i]) * (1 - progress);
+			
+			progress = (float)i / mix_dlit_bytes_count;
+			volume_i = (progress * 256 + 0.5);
+			start_num = ((int64_t)start_num * volume_i + 128) >> 8;
 
-			//first_num = 0;
-			second_num = 0;
-			result = (first_num + second_num);
+			progress = 1.1 - (float)i / mix_dlit_bytes_count;
+			volume_i = (progress * 256 + 0.5);
+			end_num = ((int64_t)end_num * volume_i + 128) >> 8;
+			
 
-			mix_buffer[i+1] = (uint8_t)(result >> 8);
-			mix_buffer[i] = (uint8_t)result;
+			result = ((int64_t)start_num + (int64_t)end_num);
+			mix_buffer[i+1]   = result >> 8;
+			mix_buffer[i] = result;
+
 		}
 		} else{
-			printf("Не поддерживаемая разрядность семплов (bitsPerSample).\n");
+			printf("Не поддерживаемая разрядность семплов: %d (bitsPerSample).\n", header_in.bitsPerSample);
+			return -1;
 		}
-		
+
+
 		// запись повтора
+		fwrite(start_buffer, 1, mix_dlit_bytes_count, outputFile);
+		free(start_buffer);
+
 		for (int i=0; i < counts; ++i){
-			fwrite(buffer, rep_dlit_without_mix_bytes_count, 1, outputFile); // база
-			fwrite(mix_buffer, mix_dlit_bytes_count, 1, outputFile); // склейка
+			fwrite(buffer, 1, rep_dlit_without_mix_bytes_count, outputFile);
+			fwrite(mix_buffer, 1, mix_dlit_bytes_count, outputFile);
 		}
-		free(mix_buffer);
 		free(buffer);
+		free(mix_buffer);
+		
+		fwrite(end_buffer, 1, mix_dlit_bytes_count, outputFile);
+		free(end_buffer);
+
 
 		// end
 		fseek(inputFile,  ptr_end_rep , SEEK_SET);

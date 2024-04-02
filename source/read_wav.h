@@ -115,12 +115,17 @@ float HHMMSS_to_seconds(const char* time){
 }
 
 uint32_t seconds_to_bytes_count(float time, WavHeader *header){
-	uint32_t result;
+	uint32_t bytes_count;
 	if (time == -1)
-		result = header->chunkSize - calc_header_size(header);
+		bytes_count = header->chunkSize - calc_header_size(header);
 	else
-		result = time * header->byteRate;
-	return  result - (result % header->blockAlign);
+		bytes_count = time * header->byteRate;
+	return  bytes_count - (bytes_count % header->blockAlign);
+}
+
+float bytes_count_to_seconds(uint32_t bytes_count, WavHeader *header){
+	float time = bytes_count / header->byteRate;
+	return  time;
 }
 #endif /* READ_WAV_H */
 

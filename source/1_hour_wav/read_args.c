@@ -4,7 +4,7 @@
 void print_usage(char *program_name){
 	/* input, start repetition, end repetition, mix duration, output
 	*/
-	printf("Использование: %s -i <входной_файл> -sr <начало повтора> -er <конец повтора> -md <длительность наложения> -ed <ожидаемая длительность> -o <выходной_файл>  [опциональные параметры]\n", program_name);
+	printf("Использование: %s -i <входной_файл> -st <начало повтора> -end <конец повтора> -md <длительность наложения> -ed <ожидаемая длительность> -o <выходной_файл>  [опциональные параметры]\n", program_name);
 	printf("Опциональные параметры:\n--test\t - предполагаемый результат\n");
 }
 
@@ -31,8 +31,8 @@ int read_params(int argc, char *argv[],
 	
 	for (int arg_num=1; arg_num < argc; ++arg_num){
 		CASE_ARG(in, "-i", 2)
-		else CASE_ARG(start_rep, "-sr", 3)
-		else CASE_ARG(end_rep, "-er", 3)
+		else CASE_ARG(start_rep, "-st", 3)
+		else CASE_ARG(end_rep, "-end", 3)
 		else CASE_ARG(mix_dlit, "-md", 3)
 		else CASE_ARG(expected_dur, "-ed", 3)
 		else CASE_ARG(out, "-o", 2)

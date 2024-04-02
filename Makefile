@@ -19,11 +19,14 @@ slowed_wav: $(SRCDIR)/slowed_wav.c
 wav_info: $(SRCDIR)/wav_info.c
 	$(CC) $(CFLAGS) -o wav_info $(SRCDIR)/wav_info.c
 
+cut_wav: $(SRCDIR)/cut.c
+	$(CC) $(CFLAGS) -o cut_wav.out $(SRCDIR)/cut.c
+
 1_hour_wav: $(SRCDIR)/1_hour_wav/1_hour_wav.c
 	$(CC) $(CFLAGS) -o 1_hour_extender.out $(SRCDIR)/1_hour_wav/1_hour_wav.c
 
 fan_1_hour_wav: $(SRCDIR)/1_hour_wav/1_hour_wav-fan.c
 	$(CC) $(CFLAGS) -o fan_1_hour_extender.out $(SRCDIR)/1_hour_wav/1_hour_wav-fan.c
 
-all: boosted_wav concat_wav mult_wav slowed_wav wav_info 1_hour_wav fan_1_hour_wav
+all: boosted_wav concat_wav mult_wav slowed_wav wav_info cut_wav 1_hour_wav fan_1_hour_wav
 
