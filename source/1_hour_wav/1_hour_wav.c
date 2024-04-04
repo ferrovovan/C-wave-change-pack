@@ -66,6 +66,7 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 		rep_dlit_without_mix_bytes_count = 0;
 	else
 		rep_dlit_without_mix_bytes_count = rep_dlit_bytes_count - 2*mix_dlit_bytes_count;
+	const uint32_t new_rep_dlit_bytes_count = rep_dlit_without_mix_bytes_count + mix_dlit_bytes_count;
 	
 	
 	CALCULATE_BYTES_COUNT(expected_dur, 3600);
@@ -79,8 +80,8 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 
 	const uint32_t end_bytes_count = (header_in.chunkSize - calc_header_size(&header_in) - end_rep_bytes_count);
 
-	const int counts   =   (expected_dur_bytes_count - start_rep_bytes_count - end_bytes_count ) / rep_dlit_bytes_count;
-	const uint32_t result_bytes = start_rep_bytes_count + end_bytes_count + counts * rep_dlit_bytes_count;
+	const int counts   =   (expected_dur_bytes_count - start_rep_bytes_count - end_bytes_count - rep_dlit_bytes_count) / new_rep_dlit_bytes_count;
+	const uint32_t result_bytes = start_rep_bytes_count + end_bytes_count + rep_dlit_bytes_count + counts * new_rep_dlit_bytes_count;
 
 
 	if (info){
@@ -162,7 +163,7 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 			volume_i = (progress * 256 + 0.5);
 			start_num = ((int64_t)start_num * volume_i + 128) >> 8;
 
-			progress = 1 - (float)i / mix_dlit_bytes_count;
+			progress = 1 - progress;
 			volume_i = (progress * 256 + 0.5);
 			end_num = ((int64_t)end_num * volume_i + 128) >> 8;
 
@@ -183,7 +184,7 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 			volume_i = (progress * 256 + 0.5);
 			start_num = ((int64_t)start_num * volume_i + 128) >> 8;
 
-			progress = 1.1 - (float)i / mix_dlit_bytes_count;
+			progress = 1 - progress;
 			volume_i = (progress * 256 + 0.5);
 			end_num = ((int64_t)end_num * volume_i + 128) >> 8;
 			
@@ -207,8 +208,10 @@ int hour_wav_file(FILE *inputFile, FILE *outputFile, char* start_rep, char* end_
 			fwrite(buffer, 1, rep_dlit_without_mix_bytes_count, outputFile);
 			fwrite(mix_buffer, 1, mix_dlit_bytes_count, outputFile);
 		}
-		free(buffer);
 		free(mix_buffer);
+		fwrite(buffer, 1, rep_dlit_without_mix_bytes_count, outputFile);
+		free(buffer);
+		
 		
 		fwrite(end_buffer, 1, mix_dlit_bytes_count, outputFile);
 		free(end_buffer);
