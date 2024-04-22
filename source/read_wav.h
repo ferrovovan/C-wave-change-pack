@@ -7,25 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
-
-typedef struct {
-	char chunkId[4];	// 4, "RIFF" = 0x4646 4952
-	uint32_t chunkSize;	// 4
-	char format[4];		// 4, "WAVE" = 0x5741 5645
-
-	char subchunk1Id[4];	// 4, "fmt " = 0x2074 6D66
-	uint32_t subchunk1Size;	// 4, "16" = 0x1000 0000
-	uint16_t audioFormat;	// 2, "1"  = 0x0100
-	uint16_t numChannels;	// 2
-	uint32_t sampleRate;	// 4, "44100" = 0x0200 44ac	Hz
-	uint32_t byteRate;	// 4, "176400" = 0x000010b1
-	uint16_t blockAlign;	// 2, "4"
-	uint16_t bitsPerSample;	// 2, "16"
-	
-	char subchunk2Id[4];	// 4, in simple "data", maybe others for example "LIST"
-	uint32_t subchunk2Size;	// 4
-	// in sum - 44
-} WavHeader;
+#include "wav_header_struct.h"
 
 
 uint32_t calc_notData_size(WavHeader *header){
@@ -80,51 +62,53 @@ int char2digit(char in_char){
 	return in_char - '0';  
 }
 
-float HHMMSS_to_seconds(const char* time){
+double HHMMSS_to_seconds(const char* time){
 
 	char *last_colon_ptr = strrchr(time, ':');
-	if (last_colon_ptr != NULL) {
-		float result_seconds = atof(last_colon_ptr+1);
-
-		last_colon_ptr--;
-		result_seconds += char2digit(*last_colon_ptr) * 60;
-		last_colon_ptr--;
-		if (last_colon_ptr - time == -1)
-			return result_seconds;
-		
-		if (*last_colon_ptr != ':'){
-			result_seconds += char2digit(*last_colon_ptr) * 10 * 60;
-			last_colon_ptr--;
-		}
-		
-		if (last_colon_ptr - time == -1)
-			return result_seconds;
-
-		last_colon_ptr--;
-		result_seconds += char2digit(*last_colon_ptr) * 3600;
-		last_colon_ptr--;
-		if (last_colon_ptr - time == -1)
-			return result_seconds;
-
-		result_seconds += char2digit(*last_colon_ptr) * 10 * 3600;
-		return result_seconds;
-		
-	} else {
+	if (last_colon_ptr == NULL) {
 		return atof(time);
 	}
+
+	double result_seconds = atof(last_colon_ptr+1);
+
+	last_colon_ptr--;
+	result_seconds += char2digit(*last_colon_ptr) * 60;
+	last_colon_ptr--;
+	if (last_colon_ptr - time == -1)
+		return result_seconds;
+	
+	if (*last_colon_ptr != ':'){
+		result_seconds += char2digit(*last_colon_ptr) * 10 * 60;
+		last_colon_ptr--;
+	}
+	
+	if (last_colon_ptr - time == -1)
+		return result_seconds;
+
+	last_colon_ptr--;
+	result_seconds += char2digit(*last_colon_ptr) * 3600;
+	last_colon_ptr--;
+	if (last_colon_ptr - time == -1)
+		return result_seconds;
+
+	result_seconds += char2digit(*last_colon_ptr) * 10 * 3600;
+	return result_seconds;
+		
 }
 
-uint32_t seconds_to_bytes_count(float time, WavHeader *header){
+uint32_t seconds_to_bytes_count(double time, WavHeader *header){
 	uint32_t bytes_count;
+	
 	if (time == -1)
 		bytes_count = header->chunkSize - calc_header_size(header);
-	else
-		bytes_count = time * header->byteRate;
+	else{
+		bytes_count = time * (double)header->byteRate;
+	}
 	return  bytes_count - (bytes_count % header->blockAlign);
 }
 
-float bytes_count_to_seconds(uint32_t bytes_count, WavHeader *header){
-	float time = bytes_count / header->byteRate;
+double bytes_count_to_seconds(uint32_t bytes_count, WavHeader *header){
+	double time = bytes_count / header->byteRate;
 	return  time;
 }
 #endif /* READ_WAV_H */
