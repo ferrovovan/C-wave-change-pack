@@ -1,6 +1,6 @@
 #define PRINT_HEADER 0
 
-#include "../read_wav.h"
+#include "read_wav.h"
 #include "read_args.c"
 #include <string.h>
 

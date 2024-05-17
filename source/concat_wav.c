@@ -1,5 +1,5 @@
 #define BUFF_SIZE 1024
-#define PRINT_HEADER 1
+#define PRINT_HEADER 0
 
 #include "read_wav.h"
 

@@ -61,7 +61,7 @@ void mult_wave_file(const char* in, const char* out, int cycles){
 	for (int i=0; i<cycles; i++){
 		fseek(inputFile, samples_start, SEEK_SET);
 		while ((bytesRead = fread(buffer, 1, sizeof(buffer), inputFile)) > 0)
-			fwrite(buffer, 1, bytesRead, outputFile);
+			fwrite(buffer, sizeof(uint8_t), bytesRead, outputFile);
 	}
 
 	// Закрытие файлов

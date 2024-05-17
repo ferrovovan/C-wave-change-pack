@@ -38,6 +38,29 @@ int readWavHeader(FILE *file, WavHeader *header) {
 	return 0;  // Успешное чтение заголовка
 }
 
+void create_WavHeader_base(WavHeader *header, uint16_t numChannels) {
+	#pragma GCC diagnostic ignored "-Wstringop-truncation"
+	#pragma GCC diagnostic push
+	strncpy(header->chunkId, "RIFF", 4); // const
+	strncpy(header->format, "WAVE", 4); // const
+
+	strncpy(header->subchunk1Id, "fmt ", 4); // const
+	header->subchunk1Size = 16; // const
+	header->audioFormat = 1; // 16-bit in sample
+	header->numChannels = numChannels;
+	header->sampleRate = 44100;
+	
+	if( header->audioFormat == 1)
+		header->blockAlign = 2 * numChannels;
+	else
+		header->blockAlign = 4; // ?
+	
+	header->byteRate = header->sampleRate * header->blockAlign;
+	header->bitsPerSample = numChannels * 8;
+	strncpy(header->subchunk2Id, "data", 4);
+	#pragma GCC diagnostic pop
+}
+
 void printWavHeader(WavHeader *header) {
 	// header
 	printf("Chunk ID: %.4s\n", header->chunkId);
