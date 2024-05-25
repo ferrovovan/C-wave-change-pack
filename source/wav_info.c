@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
-	FILE *inputFile = fopen(filename, "rb");
+	FILE *inputFile = fopen(argv[1], "rb");
 	if (inputFile == NULL) {
 		perror("Ошибка открытия входного файла");
 	}
