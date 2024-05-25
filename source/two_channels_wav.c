@@ -3,11 +3,11 @@
 #define REQ_ARG_OUTPUT
 
 #include "args_parser.h"
-//
+// including end
 
 
 #define BUFF_SIZE 1024
-#define PRINT_HEADER 0
+#define PRINT_HEADER 1
 
 #include "read_wav.h"
 
@@ -18,6 +18,10 @@ void bisect_wav(FILE *inputFile, FILE *outputFile){
 	if (PRINT_HEADER){
 		printf("\nfirst header:\n");
 		printWavHeader(&in_header);
+	}
+	if (in_header.numChannels == 2){
+		printf("File alredy have 2 channels\n");
+		return -1;
 	}
 
 	// Создание нового заголовка для выходного файла
