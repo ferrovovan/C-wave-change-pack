@@ -1,7 +1,12 @@
 /*
 define before include this header:
 #define ARG_INPUT    0x01
+OR
+#define REQ_ARG_INPUT
+
 #define ARG_OUTPUT   0x02
+OR
+#define REQ_ARG_OUTPUT
 
 #define ARG_START_TIME    0x04
 #define ARG_END_TIME      0x05
@@ -10,57 +15,78 @@ define before include this header:
 
 #define ARG_TEST_FLAG     0x10
 */
+/*
+global variables:
+	char *input_file;
+	char *output_file;
+	char *start_time;
+	char *end_time;
+	char *mix_duration;
+	char *expected_duration;
+	int test_flag;
+*/
 
 
 #include <stdio.h>
 #include <getopt.h>
 
 
+
+
+#ifdef REQ_ARG_INPUT
+#define ARG_INPUT
+#endif
+
+#ifdef REQ_ARG_OUTPUT
+#define ARG_OUTPUT
+#endif
+
+
 #ifdef ARG_INPUT
-char *input_file;
+char *input_file = NULL;
 #endif
 #ifdef ARG_OUTPUT
-char *output_file;
+char *output_file = NULL;
 #endif
 #ifdef ARG_START_TIME
-char *start_time;
+char *start_time = NULL;
 #endif
 #ifdef ARG_END_TIME
-char *end_time;
+char *end_time = NULL;
 #endif
 #ifdef ARG_MD_TIME
-char *md_time;
+char *mix_duration = NULL;
 #endif
 #ifdef ARG_ED_TIME
-char *ed_time;
+char *expected_duration = NULL;
 #endif
 #ifdef ARG_TEST_FLAG
-int test_flag;
+int test_flag = 0;
 #endif
 
 // Функция для печати использования
-void print_usage(char *program_name){
-	printf("Использование: %s", program_name);
+void print_usage(){
+	printf("\nПараметры:\n");
 	#ifdef ARG_INPUT
-		printf(" [ -i | --input ] <входной_файл> ");
+		printf(" [ -i | --input ] <входной_файл>  \n");
 	#endif
 	#ifdef ARG_START_TIME
-		printf(" [ -s | --start ] <начало повтора> ");
+		printf(" [ -s | --start ] <начало повтора> \n");
 	#endif
 	#ifdef ARG_END_TIME
-		printf(" [ -e | --end ] <конец повтора> ");
+		printf(" [ -e | --end ]   <конец повтора> \n");
 	#endif
 	#ifdef ARG_MD_TIME
-		printf(" [ -m | --mix_duration ] <длительность наложения> ");
+		printf(" [ -m | --mix_duration ] <длительность наложения> \n");
 	#endif
 	#ifdef ARG_ED_TIME
-		printf(" [ -d | --expected_duration ] <ожидаемая длительность> ");
+		printf(" [ -d | --expected_duration ] <ожидаемая длительность> \n");
 	#endif
 	#ifdef ARG_OUTPUT
-		printf(" [ -o | --output ] <выходной_файл> ");
+		printf(" [ -o | --output ] <выходной_файл> \n");
 	#endif
 	#ifdef ARG_TEST_FLAG
-		printf(" --test - вывод предполагаемый результат");
+		printf(" --test   вывод статистики предполагаемого результата \n");
 	#endif
 	printf("\n");
 }
@@ -119,12 +145,12 @@ int parse_arguments(int argc, char *argv[]) {
 		#endif
 		#ifdef ARG_MD_TIME
 			case 'm':
-				md_time = optarg;
+				mix_duration = optarg;
 				break;
 		#endif
 		#ifdef ARG_ED_TIME
 			case 'd':
-				ed_time = optarg;
+				expected_duration = optarg;
 				break;
 		#endif
 		#ifdef ARG_TEST_FLAG
@@ -134,22 +160,43 @@ int parse_arguments(int argc, char *argv[]) {
 		#endif
 			case '?':
 				fprintf(stderr, "Unknown option or missing argument: '-%c'\n", optopt);
+				/* fall through */
 			default:
 				print_usage(argv[0]);
-				exit(EXIT_FAILURE);
 				return -1;
 		}
 	}
+
+
+	#ifdef REQ_ARG_INPUT
+	if (input_file == NULL) {
+		fprintf(stderr, \
+		"Ошибка: обязательный параметр -i <входной_файл> отсутствует.\n");
+		print_usage(argv[0]);
+		return -1;
+	}
+	#endif
+	#ifdef REQ_ARG_OUTPUT
+	if (output_file == NULL) {
+		fprintf(stderr, \
+		"Ошибка: обязательный параметр -o <выходной_файл> отсутствует.\n");
+		print_usage(argv[0]);
+		return -1;
+	}
+	#endif
+
 	return 0;
 }
 
+/*
+EXAMPLE
 int main(int argc, char *argv[]) {
-	// Пример вызова функции разбора аргументов
 	if (parse_arguments(argc, argv) != 0) {
 		return EXIT_FAILURE;
 	}
 
-	// Ваш основной код здесь
+	// main code
+
 	return EXIT_SUCCESS;
 }
-
+*/
