@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
 		printWavHeader(&header_in);
 	}
 
+// calculations block
 
 #define CALCULATE_BYTES_COUNT(prefix, default_dur) \
 	uint32_t prefix##_bytes_count; \
@@ -117,18 +118,14 @@ int main(int argc, char *argv[]) {
 	else {
 		// Создание нового заголовка для выходного файла
 		WavHeader hourHeader;
-		create_WavHeader_base(&hourHeader, 2);
+		copy_WavHeader(&header_in, &hourHeader);
 		hourHeader.chunkSize = result_bytes + 44;
 		hourHeader.subchunk2Size = result_bytes;
-
 		
 		if (PRINT_HEADER){
 			printf("\nhour Header\n");
 			printWavHeader(&hourHeader);
 		}
-	
-		
-		// Запись нового заголовка в выходной файл
 		fwrite(&hourHeader, sizeof(WavHeader), 1, outputFile);
 
 

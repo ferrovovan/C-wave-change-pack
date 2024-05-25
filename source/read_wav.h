@@ -81,6 +81,12 @@ void printWavHeader(WavHeader *header) {
 	printf("Subchunk2 Size: %u\n", header->subchunk2Size);
 }
 
+void copy_WavHeader(WavHeader *in_header, WavHeader *out_header){
+	*out_header = *in_header;
+	strncpy(out_header->subchunk2Id, "data", 4);
+}
+
+// parse functions
 int char2digit(char in_char){
 	return in_char - '0';  
 }
