@@ -23,6 +23,10 @@ uint32_t calc_header_size(WavHeader *header){
 	return res;
 }
 
+uint32_t calc_main_data_size(WavHeader *header){
+	return ( header->chunkSize - calc_header_size(header) );
+}
+
 int readWavHeader(FILE *file, WavHeader *header) {
 	// Чтение заголовка WAV-файла
 	fread(header, sizeof( WavHeader ), 1, file);

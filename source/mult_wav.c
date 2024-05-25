@@ -1,41 +1,19 @@
 #define BUFF_SIZE 1024
 #define PRINT_HEADER 1
 
+// arg parser including
+#define REQ_ARG_INPUT
+#define REQ_ARG_OUTPUT
+#define REQ_ARG_COUNT
+
+#include "args_parser.h"
+//
+
 #include "read_wav.h"
 
 
-WavHeader create_multiplicatedHeader(WavHeader *in_header, const int num) {
-	WavHeader multiplicatedHeader = *in_header;  // Копируем все поля из первого заголовка
-
-	// Изменяем Chunk Size на сумму Chunk Size из обоих заголовков
-	uint32_t samples_size	= in_header->chunkSize - calc_header_size(in_header);
-	samples_size = samples_size * num;
-
-	multiplicatedHeader.chunkSize = samples_size + 44;
-
-	strcpy(multiplicatedHeader.subchunk2Id, "data");
-	multiplicatedHeader.subchunk2Size = samples_size;
-
-	return multiplicatedHeader;
-}
-
-void mult_wave_file(const char* in, const char* out, int cycles){
-	FILE *inputFile, *outputFile;
-
-	// Открытие первого входного файла для чтения
-	inputFile = fopen(in, "rb");
-	if (inputFile == NULL) {
-		perror("Ошибка открытия входного файла");
-	}
-
-	// Открытие выходного файла для записи
-	outputFile = fopen(out, "wb");
-	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
-		fclose(inputFile);
-	}
-
-	// Чтение заголовка первого файла
+void mult_wave_file(FILE *inputFile, FILE *outputFile, const int cycles){
+	// Считывание заголовка первого файла
 	WavHeader in_header;
 	readWavHeader(inputFile, &in_header);
 	if (PRINT_HEADER){
@@ -45,14 +23,18 @@ void mult_wave_file(const char* in, const char* out, int cycles){
 
     
 	// Создание нового заголовка для выходного файла
-	WavHeader out_header = create_multiplicatedHeader(&in_header, cycles);
+	WavHeader out_header;
+	copy_WavHeader(&in_header, &out_header);
+	uint32_t result_bytes = calc_main_data_size(&in_header) * cycles;
+	out_header.chunkSize = result_bytes + 44;
+	out_header.subchunk2Size = result_bytes;
+
 	if (PRINT_HEADER){
 		printf("\nOut header:\n");
 		printWavHeader(&out_header);
 	}
-    
-	// Запись нового заголовка в выходной файл
 	fwrite(&out_header, sizeof(out_header), 1, outputFile);    
+
 
 	uint8_t buffer[BUFF_SIZE];
 	size_t bytesRead;
@@ -64,22 +46,36 @@ void mult_wave_file(const char* in, const char* out, int cycles){
 			fwrite(buffer, sizeof(uint8_t), bytesRead, outputFile);
 	}
 
-	// Закрытие файлов
-	fclose(inputFile);
-	fclose(outputFile);
 	printf("\nФайл успешно умножен.\n");
 }
 
 int main(int argc, char *argv[]) {
-	if (argc != 4) {
-		printf("Использование: %s <входной_файл> <выходной_файл> <кол-во повторений>\n", argv[0]);
-		return 1;
+// Считывание
+	if (parse_arguments(argc, argv) != 0) {
+		return EXIT_FAILURE;
+	}
+	
+// Открытие файлов
+	FILE *inputFile = fopen(input_file, "rb");
+	if (inputFile == NULL) {
+		perror("Ошибка открытия входного файла");
 	}
 
-	int number = atoi(argv[3]);	// Преобразование строки в целое число
+	FILE *outputFile = fopen(output_file, "wb");
+	if (outputFile == NULL) {
+		perror("Ошибка открытия выходного файла");
+		fclose(inputFile);
+	}
 
-	// Передача аргументов в функцию
-	mult_wave_file(argv[1], argv[2], number);
-	return 0;
+// Валидация
+	int cycles = atoi(count);	// Преобразование строки в целое число
+
+// Передача аргументов в функцию
+	mult_wave_file(inputFile, outputFile, cycles);
+
+	fclose(inputFile);
+	fclose(outputFile);
+
+	return EXIT_SUCCESS;
 }
 
