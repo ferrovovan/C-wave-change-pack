@@ -2,11 +2,6 @@
 #define REQ_ARG_INPUT
 #define REQ_ARG_OUTPUT
 
-#define ARG_START_TIME
-#define ARG_END_TIME
-
-#define ARG_TEST_FLAG
-
 #include "args_parser.h"
 //
 
