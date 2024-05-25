@@ -1,14 +1,18 @@
+// args parser including
+#define REQ_ARG_OUTPUT
+#define REQ_ARG_ED_TIME
+
+#include "args_parser.h"
+//
+
+
 #include "read_wav.h"
 #include <stdint.h>
 
 #define BUFF_SIZE 1024
 
 
-void zero_wav_file(char* out, double time){
-	// Открытие выходного файла для записи
-	FILE *outputFile = fopen(out, "wb");
-	if (outputFile == NULL)
-		perror("Ошибка открытия выходного файла");
+void zero_wav_file(FILE *outputFile, double time){
     
 	// Создание нового заголовка для выходного файла
 	WavHeader outHeader;
@@ -28,17 +32,30 @@ void zero_wav_file(char* out, double time){
 		fwrite(buffer, sizeof(uint8_t), BUFF_SIZE, outputFile);
 	fwrite(buffer, sizeof(uint8_t), remainder, outputFile);
 
-	fclose(outputFile);
 	printf("\nФайл успешно занулён.\n");
 }
 
 
+
 int main(int argc, char *argv[]) {
-	if (argc != 3) {
-		printf("Использование: %s <выходной_файл> <время в секундах>\n", argv[0]);
-		return 1;
+// Считывание
+	if (parse_arguments(argc, argv) != 0) {
+		return EXIT_FAILURE;
 	}
-	double time = HHMMSS_to_seconds(argv[2]);
-	zero_wav_file(argv[1], time);
-	return 0;
+	
+// Открытие файлов
+	FILE *outputFile = fopen(output_file, "wb");
+	if (outputFile == NULL) {
+		perror("Ошибка открытия выходного файла");
+	}
+
+// Валидация
+	double time = HHMMSS_to_seconds(expected_duration);
+
+// Передача аргументов в функцию
+	zero_wav_file(outputFile, time);
+
+	fclose(outputFile);
+
+	return EXIT_SUCCESS;
 }

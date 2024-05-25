@@ -1,17 +1,35 @@
 /*
 define before include this header:
-#define ARG_INPUT    0x01
+example:
+// arg parser including
+#define REQ_ARG_INPUT
+#define REQ_ARG_OUTPUT
+
+#include "args_parser.h"
+//
+
+requared:
+#define ARG_INPUT
 OR
 #define REQ_ARG_INPUT
 
-#define ARG_OUTPUT   0x02
+#define ARG_OUTPUT
 OR
 #define REQ_ARG_OUTPUT
 
+#define ARG_COUNT
+OR
+#define REQ_ARG_COUNT
+
+#define ARG_ED_TIME
+OR
+#define REQ_ARG_ED_TIME
+
+
+optional:
 #define ARG_START_TIME    0x04
 #define ARG_END_TIME      0x05
 #define ARG_MD_TIME      0x06
-#define ARG_ED_TIME      0x07
 
 #define ARG_TEST_FLAG     0x10
 */
@@ -19,10 +37,13 @@ OR
 global variables:
 	char *input_file;
 	char *output_file;
+
 	char *start_time;
 	char *end_time;
 	char *mix_duration;
 	char *expected_duration;
+	
+	char *count;
 	int test_flag;
 */
 
@@ -41,6 +62,13 @@ global variables:
 #define ARG_OUTPUT
 #endif
 
+#ifdef REQ_ARG_COUNT
+#define ARG_COUNT
+#endif
+
+#ifdef REQ_ARG_ED_TIME
+#define ARG_ED_TIME
+#endif
 
 #ifdef ARG_INPUT
 char *input_file = NULL;
@@ -60,6 +88,11 @@ char *mix_duration = NULL;
 #ifdef ARG_ED_TIME
 char *expected_duration = NULL;
 #endif
+
+#ifdef ARG_COUNT
+char *count = NULL;
+#endif
+
 #ifdef ARG_TEST_FLAG
 int test_flag = 0;
 #endif
@@ -84,6 +117,10 @@ void print_usage(){
 	#endif
 	#ifdef ARG_OUTPUT
 		printf(" [ -o | --output ] <выходной_файл> \n");
+	#endif
+
+	#ifdef ARG_COUNT
+		printf(" [ -c | --count ] <повторения> \n");
 	#endif
 	#ifdef ARG_TEST_FLAG
 		printf(" --test   вывод статистики предполагаемого результата \n");
@@ -115,6 +152,11 @@ int parse_arguments(int argc, char *argv[]) {
 		#ifdef ARG_ED_TIME
 		{"expected_duration", required_argument, NULL, 'd'},
 		#endif
+
+		#ifdef ARG_COUNT
+		{"count", required_argument, NULL, 'c'},
+		#endif
+
 		#ifdef ARG_TEST_FLAG
 		{"test", no_argument, NULL, 't'},
 		#endif
@@ -158,6 +200,11 @@ int parse_arguments(int argc, char *argv[]) {
 				test_flag = 1;
 				break;
 		#endif
+		#ifdef ARG_COUNT
+			case 'c':
+				count = optarg;
+				break;
+		#endif
 			case '?':
 				fprintf(stderr, "Unknown option or missing argument: '-%c'\n", optopt);
 				/* fall through */
@@ -180,6 +227,14 @@ int parse_arguments(int argc, char *argv[]) {
 	if (output_file == NULL) {
 		fprintf(stderr, \
 		"Ошибка: обязательный параметр -o <выходной_файл> отсутствует.\n");
+		print_usage(argv[0]);
+		return -1;
+	}
+	#endif
+	#ifdef REQ_ARG_COUNT
+	if (count == NULL) {
+		fprintf(stderr, \
+		"Ошибка: обязательный параметр -c <повторения> отсутствует.\n");
 		print_usage(argv[0]);
 		return -1;
 	}
