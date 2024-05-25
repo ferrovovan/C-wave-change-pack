@@ -9,11 +9,11 @@ example:
 //
 
 requared:
-#define ARG_INPUT    0x01
+#define ARG_INPUT
 OR
 #define REQ_ARG_INPUT
 
-#define ARG_OUTPUT   0x02
+#define ARG_OUTPUT
 OR
 #define REQ_ARG_OUTPUT
 
@@ -21,11 +21,15 @@ OR
 OR
 #define REQ_ARG_COUNT
 
+#define ARG_ED_TIME
+OR
+#define REQ_ARG_ED_TIME
+
+
 optional:
 #define ARG_START_TIME    0x04
 #define ARG_END_TIME      0x05
 #define ARG_MD_TIME      0x06
-#define ARG_ED_TIME      0x07
 
 #define ARG_TEST_FLAG     0x10
 */
@@ -62,6 +66,9 @@ global variables:
 #define ARG_COUNT
 #endif
 
+#ifdef REQ_ARG_ED_TIME
+#define ARG_ED_TIME
+#endif
 
 #ifdef ARG_INPUT
 char *input_file = NULL;
