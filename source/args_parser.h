@@ -1,5 +1,14 @@
 /*
 define before include this header:
+example:
+// arg parser including
+#define REQ_ARG_INPUT
+#define REQ_ARG_OUTPUT
+
+#include "args_parser.h"
+//
+
+requared:
 #define ARG_INPUT    0x01
 OR
 #define REQ_ARG_INPUT
@@ -12,7 +21,7 @@ OR
 OR
 #define REQ_ARG_COUNT
 
-
+optional:
 #define ARG_START_TIME    0x04
 #define ARG_END_TIME      0x05
 #define ARG_MD_TIME      0x06

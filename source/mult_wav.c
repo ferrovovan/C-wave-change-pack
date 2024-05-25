@@ -1,7 +1,7 @@
 #define BUFF_SIZE 1024
 #define PRINT_HEADER 1
 
-// arg parser including
+// args parser including
 #define REQ_ARG_INPUT
 #define REQ_ARG_OUTPUT
 #define REQ_ARG_COUNT
