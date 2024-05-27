@@ -8,7 +8,7 @@ typedef struct {
 
 	char subchunk1Id[4];	// 4, "fmt " = 0x2074 6D66
 	uint32_t subchunk1Size;	// 4, "16" = 0x1000 0000
-	uint16_t audioFormat;	// 2, "1"  = 0x0100
+	uint16_t audioFormat;	// 2, "1"  = 0x0100 PCM
 	uint16_t numChannels;	// 2
 	uint32_t sampleRate;	// 4, "44100" = 0x0200 44ac	Hz
 	uint32_t byteRate;	// 4, "176400" = 0x000010b1

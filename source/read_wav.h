@@ -28,18 +28,54 @@ uint32_t calc_main_data_size(WavHeader *header){
 }
 
 int readWavHeader(FILE *file, WavHeader *header) {
-	// Чтение заголовка WAV-файла
-	fread(header, sizeof( WavHeader ), 1, file);
-
-	// Проверка, что заголовок начинается с "RIFF" и формата "WAVE"
-	if (strncmp(header->chunkId, "RIFF", 4) != 0 || strncmp(header->format, "WAVE", 4) != 0) {
-		perror("Некорректный формат файла");
-		return 1;
+	fseek(file, 0, SEEK_CUR);
+	if( fread(header, sizeof(WavHeader), 1, file) != 1 ){
+		perror("Not enough bytes");
+		return -2;
 	}
-	//printf("header->subchunk2Id = %s", header->subchunk2Id);
-	fseek(file, calc_notData_size(header), SEEK_CUR);
+	
 
+
+#define compare_macro(str, ptr) \
+	if (strncmp(ptr, str, 4) != 0){ \
+		goto incorrect_format; \
+	}
+
+//  chunkId
+	compare_macro("RIFF", header->chunkId)
+//  chunkSize
+//  format
+	compare_macro("WAVE", header->format)
+//  subchunk1Id
+	compare_macro("fmt ", header->subchunk1Id)
+//  subchunk1Size
+	if( header->subchunk1Size != 16 )
+		goto incorrect_format;
+//  audioFormat
+	if( header->audioFormat != 1 )
+		goto incorrect_format;
+//  numChannels
+//  sampleRate
+	/*
+	if( header->sampleRate != 44100 )
+		goto incorrect_format;
+	*/
+//  byteRate
+	/*
+	if( header->byteRate != 176400 )
+		goto incorrect_format;
+	*/
+//  blockAlign
+//  bitsPerSample
+
+// subchunk2Id
+// subchunk2Size
+	fseek(file, calc_notData_size(header), SEEK_CUR);
 	return 0;  // Успешное чтение заголовка
+	
+	incorrect_format:
+		perror("Incorrect file format");
+		return -1;
 }
 
 void create_WavHeader_base(WavHeader *header, uint16_t numChannels) {
@@ -50,7 +86,8 @@ void create_WavHeader_base(WavHeader *header, uint16_t numChannels) {
 
 	strncpy(header->subchunk1Id, "fmt ", 4); // const
 	header->subchunk1Size = 16; // const
-	header->audioFormat = 1; // 16-bit in sample
+	header->audioFormat = 1; // PCM Format,
+/* also read rfc2361.txt for more Format names */
 	header->numChannels = numChannels;
 	header->sampleRate = 44100;
 	
@@ -145,4 +182,3 @@ double bytes_count_to_seconds(uint32_t bytes_count, WavHeader *header){
 	return  time;
 }
 #endif /* READ_WAV_H */
-
