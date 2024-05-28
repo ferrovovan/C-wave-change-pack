@@ -15,25 +15,15 @@
 #include <string.h>
 
 
-int cut_wav_file(FILE *inputFile, FILE *outputFile, char* start_time, char* end_time, short info){
+int cut_wav_file(FILE *inputFile, FILE *outputFile, double start_time, double end_time, short info){
 
 	WavHeader in_header;
 	readWavHeader(inputFile, &in_header);
 
 
-#define CALCULATE_BYTES_COUNT(prefix, default_dur) \
-	uint32_t prefix##_bytes_count; \
-	if (prefix != NULL) { \
-		long double seconds = HHMMSS_to_seconds(prefix); \
-		prefix##_bytes_count = seconds_to_bytes_count(seconds, 	&in_header); \
-	} else { \
-		prefix##_bytes_count = seconds_to_bytes_count(default_dur, &in_header); \
-	}
-
-	CALCULATE_BYTES_COUNT(start_time, 0);
-	CALCULATE_BYTES_COUNT(end_time, -1);
-
+	uint32_t start_time_bytes_count = seconds_to_bytes_count(start_time, &in_header);
 	const uintptr_t ptr_start_cut = (uintptr_t)start_time_bytes_count + calc_header_size(&in_header);
+	uint32_t end_time_bytes_count = seconds_to_bytes_count(end_time, &in_header);
 	const uintptr_t ptr_end_cut = (uintptr_t)end_time_bytes_count + calc_header_size(&in_header);
 
 
@@ -41,6 +31,7 @@ int cut_wav_file(FILE *inputFile, FILE *outputFile, char* start_time, char* end_
 		perror("Конец меньше начала.\n");
 		return -1;
 	}
+
 	const uint32_t cut_dlit = ptr_end_cut - ptr_start_cut;
 	
 
@@ -49,6 +40,7 @@ int cut_wav_file(FILE *inputFile, FILE *outputFile, char* start_time, char* end_
 		printf("\nfirst header:\n");
 		printWavHeader(&in_header);
 
+		printf("\n-----------\n");
 		printf("Byte block:\n");
 		printf("start_time_bytes_count = %d;\n", start_time_bytes_count);
 		printf("end_time_bytes_count = %d;\n", end_time_bytes_count);
@@ -95,19 +87,35 @@ int main(int argc, char *argv[]) {
 // Открытие файлов
 	FILE *inputFile = fopen(input_file, "rb");
 	if (inputFile == NULL) {
-		perror("Ошибка открытия входного файла");
+		printf("Ошибка открытия входного файла.\n");
+		return EXIT_FAILURE;
 	}
 
 	FILE *outputFile = fopen(output_file, "wb");
 	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
+		printf("Ошибка открытия выходного файла.\n");
 		fclose(inputFile);
+		return EXIT_FAILURE;
 	}
 
 // Валидация
+#define READ_VALUE(prefix, default_dur) \
+	if (prefix != NULL){ \
+		prefix##_double = HHMMSS_to_seconds(prefix); \
+		if (prefix##_double == -1){ \
+			printf("Неверный формат %s\n", prefix); \
+			return EXIT_FAILURE; \
+		} \
+	} else { \
+		prefix##_double = default_dur; \
+	}
+
+	double start_time_double, end_time_double;
+	READ_VALUE(start_time, 0)
+	READ_VALUE(end_time, -1)
 
 // Передача аргументов в функцию
-	cut_wav_file(inputFile, outputFile, start_time, end_time, (short )test_flag);
+	cut_wav_file(inputFile, outputFile, start_time_double, end_time_double, (short )test_flag);
 
 	fclose(inputFile);
 	fclose(outputFile);
