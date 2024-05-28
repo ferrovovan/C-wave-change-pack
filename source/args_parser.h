@@ -125,6 +125,17 @@ void print_usage(){
 	#ifdef ARG_TEST_FLAG
 		printf(" --test   вывод статистики предполагаемого результата \n");
 	#endif
+	#if defined(ARG_START_TIME) || \
+	    defined(ARG_END_TIME) || \
+	    defined(ARG_MD_TIME) || \
+	    defined(ARG_ED_TIME)
+		printf("\nФормат времени:\n");
+		printf("HH:MM:SS.MS\n");
+		printf("HH - часы (опционально)\n");
+		printf("MM - минуты (опционально)\n");
+		printf("SS - секунды (обязательно)\n");
+		printf("MS - миллисекунды (опционально)\n");
+	#endif
 	printf("\n");
 }
 
