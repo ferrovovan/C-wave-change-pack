@@ -132,19 +132,46 @@ int char2digit(char in_char){
 	return in_char - '0';  
 }
 
-double HHMMSS_to_seconds(const char* time){
+double HHMMSS_to_seconds(const char* time_str){
+	int len = strlen(time_str);
+	int colons = 0, dots = 0, val;
 
-	char *last_colon_ptr = strrchr(time, ':');
-	if (last_colon_ptr == NULL) {
-		return atof(time);
+	// Валидация разделителей
+	for (int i = 0; i < len; ++i) {
+		if (time_str[i] == ':') {
+			if( dots )
+				return -1;
+			colons++;
+		} else if (time_str[i] == '.') {
+			dots++;
+		}
+		else {
+			val = char2digit(time_str[i]);
+			if ( val < 0 || val > 9 )
+				return -1;
+		}
 	}
 
-	double result_seconds = atof(last_colon_ptr+1);
+	if (colons > 2 || dots > 1) {
+		return -1;
+	}
+
+
+	double result_seconds;
+	char *last_colon_ptr = strrchr(time_str, ':');
+	if (last_colon_ptr == NULL) {
+		return atof(time_str);
+	}
+
+	val = char2digit( *(last_colon_ptr+1) );
+	if ( val < 0 || val > 9 )
+		return -1;
+	result_seconds = atof(last_colon_ptr+1);
 
 	last_colon_ptr--;
 	result_seconds += char2digit(*last_colon_ptr) * 60;
 	last_colon_ptr--;
-	if (last_colon_ptr - time == -1)
+	if (last_colon_ptr - time_str == -1)
 		return result_seconds;
 	
 	if (*last_colon_ptr != ':'){
@@ -152,13 +179,13 @@ double HHMMSS_to_seconds(const char* time){
 		last_colon_ptr--;
 	}
 	
-	if (last_colon_ptr - time == -1)
+	if (last_colon_ptr - time_str == -1)
 		return result_seconds;
 
 	last_colon_ptr--;
 	result_seconds += char2digit(*last_colon_ptr) * 3600;
 	last_colon_ptr--;
-	if (last_colon_ptr - time == -1)
+	if (last_colon_ptr - time_str == -1)
 		return result_seconds;
 
 	result_seconds += char2digit(*last_colon_ptr) * 10 * 3600;
