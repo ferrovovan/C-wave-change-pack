@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../read_wav.h"
+#include "read_wav.h"
 
 
 int calculate_constans(){

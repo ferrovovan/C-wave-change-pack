@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "../wav_header_struct.h"
+#include "wav_header_struct.h"
 
 /* Переменные алгоритма */
 extern FILE *inputFile, *outputFile;

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../wav_header_struct.h"
+#include "wav_header_struct.h"
 
 extern uint32_t beginning_bytes_count, end_bytes_count, mix_bytes_count, repetition_bytes_count, repetition_without_mix_bytes_count, result_bytes;
 extern int counts;

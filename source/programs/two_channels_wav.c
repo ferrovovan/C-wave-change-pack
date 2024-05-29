@@ -21,7 +21,7 @@ void bisect_wav(FILE *inputFile, FILE *outputFile){
 	}
 	if (in_header.numChannels == 2){
 		printf("File alredy have 2 channels\n");
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	// Создание нового заголовка для выходного файла
@@ -72,9 +72,7 @@ int main(int argc, char *argv[]) {
 
 	bisect_wav(inputFile, outputFile);
 
-	fclose(inputFile);
-	fclose(outputFile);
-
+	fclose(inputFile);	fclose(outputFile);
 	return EXIT_SUCCESS;
 }
 

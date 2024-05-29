@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "../read_wav.h"
+#include "read_wav.h"
 
 /* Переменные считывания */
 char *in = NULL, *out = NULL, *start_rep = NULL, *end_rep = NULL, *mix_dlit = NULL, *expected_dur = NULL;
