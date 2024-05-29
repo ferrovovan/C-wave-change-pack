@@ -59,13 +59,15 @@ int main(int argc, char *argv[]) {
 // Открытие файлов
 	FILE *inputFile = fopen(input_file, "rb");
 	if (inputFile == NULL) {
-		perror("Ошибка открытия входного файла");
+		printf("Ошибка открытия входного файла.\n");
+		return EXIT_FAILURE;
 	}
 
 	FILE *outputFile = fopen(output_file, "wb");
 	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
+		printf("Ошибка открытия выходного файла.\n");
 		fclose(inputFile);
+		return EXIT_FAILURE;
 	}
 
 	bisect_wav(inputFile, outputFile);

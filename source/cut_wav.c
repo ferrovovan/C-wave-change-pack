@@ -8,11 +8,10 @@
 #define ARG_TEST_FLAG
 
 #include "args_parser.h"
-//
+// including end
 
 
 #include "read_wav.h"
-#include <string.h>
 
 
 int cut_wav_file(FILE *inputFile, FILE *outputFile, double start_time, double end_time, short info){

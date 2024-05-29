@@ -1,15 +1,16 @@
-#define BUFF_SIZE 1024
-#define PRINT_HEADER 1
-
 // args parser including
 #define REQ_ARG_INPUT
 #define REQ_ARG_OUTPUT
 #define REQ_ARG_COUNT
 
 #include "args_parser.h"
-//
+// including end
+
 
 #include "read_wav.h"
+
+#define BUFF_SIZE 1024
+#define PRINT_HEADER 1
 
 
 void mult_wave_file(FILE *inputFile, FILE *outputFile, const int cycles){
@@ -58,24 +59,28 @@ int main(int argc, char *argv[]) {
 // Открытие файлов
 	FILE *inputFile = fopen(input_file, "rb");
 	if (inputFile == NULL) {
-		perror("Ошибка открытия входного файла");
+		printf("Ошибка открытия входного файла.\n");
+		return EXIT_FAILURE;
 	}
 
 	FILE *outputFile = fopen(output_file, "wb");
 	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
+		printf("Ошибка открытия выходного файла.\n");
 		fclose(inputFile);
+		return EXIT_FAILURE;
 	}
 
 // Валидация
-	int cycles = atoi(count);	// Преобразование строки в целое число
+	int cycles = atoi(count);
+	if( cycles == 0 ){
+		printf("Некорректное значение циклов.\n");
+		return EXIT_FAILURE;
+	}
 
 // Передача аргументов в функцию
 	mult_wave_file(inputFile, outputFile, cycles);
 
-	fclose(inputFile);
-	fclose(outputFile);
-
+	fclose(inputFile);	fclose(outputFile);
 	return EXIT_SUCCESS;
 }
 

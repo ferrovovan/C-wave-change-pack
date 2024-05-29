@@ -22,29 +22,7 @@ WavHeader createCombinedHeader(WavHeader *header1, WavHeader *header2) {
 	return combinedHeader;
 }
 
-void concat_wav_files(char* in_1, char* in_2, char* out){
-	FILE *inputFile1, *inputFile2, *outputFile;
-
-	// Открытие первого входного файла для чтения
-	inputFile1 = fopen(in_1, "rb");
-	if (inputFile1 == NULL) {
-		perror("Ошибка открытия первого входного файла");
-	}
-
-	// Открытие второго входного файла для чтения
-	inputFile2 = fopen(in_2, "rb");
-	if (inputFile2 == NULL) {
-		perror("Ошибка открытия второго входного файла");
-		fclose(inputFile1);
-	}
-
-	// Открытие выходного файла для записи
-	outputFile = fopen(out, "wb");
-	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
-		fclose(inputFile1);	fclose(inputFile2);
-	}
-
+void concat_wav_files(FILE *inputFile1, FILE *inputFile2, FILE *outputFile){
 	// Чтение заголовка первого файла
 	WavHeader header1;
 	readWavHeader(inputFile1, &header1);
@@ -81,10 +59,6 @@ void concat_wav_files(char* in_1, char* in_2, char* out){
 	while ((bytesRead = fread(buffer, 1, sizeof(buffer), inputFile2)) > 0)
 		fwrite(buffer, 1, bytesRead, outputFile);
 
-	// Закрытие файлов
-	fclose(inputFile1);
-	fclose(inputFile2);
-	fclose(outputFile);
 
 	printf("\nФайлы успешно объединены.\n");
 }
@@ -92,11 +66,36 @@ void concat_wav_files(char* in_1, char* in_2, char* out){
 int main(int argc, char *argv[]) {
 	if (argc != 4) {
 		printf("Использование: %s <входной_файл1> <входной_файл2> <выходной_файл>\n", argv[0]);
-		return 1;
+		return EXIT_FAILURE;
+	}
+	
+	// Открытие первого входного файла для чтения
+	FILE *inputFile1 = fopen(argv[1], "rb");
+	if (inputFile1 == NULL) {
+		printf("Ошибка открытия первого входного файла.\n");
+		return EXIT_FAILURE;
 	}
 
-	// Передача аргументов в функцию
-	concat_wav_files(argv[1], argv[2], argv[3]);
-	return 0;
+	// Открытие второго входного файла для чтения
+	FILE *inputFile2 = fopen(argv[2], "rb");
+	if (inputFile2 == NULL) {
+		printf("Ошибка открытия второго входного файла.\n");
+		fclose(inputFile1);
+		return EXIT_FAILURE;
+	}
+
+	// Открытие выходного файла для записи
+	FILE *outputFile = fopen(argv[3], "wb");
+	if (outputFile == NULL) {
+		printf("Ошибка открытия выходного файла.\n");
+		fclose(inputFile1);	fclose(inputFile2);
+		return EXIT_FAILURE;
+	}
+
+
+	concat_wav_files(inputFile1, inputFile2, outputFile);
+	
+	fclose(inputFile1);	fclose(inputFile2);	fclose(outputFile);
+	return EXIT_SUCCESS;
 }
 
