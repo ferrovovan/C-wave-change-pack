@@ -7,14 +7,12 @@ Programs to read, change wave files, on C language.
 Avaible programs:
 1. wav_info
 2. concat_wav
-3. boosted_wav
-4. slowed_wav
-5. mult_wav
-6. cut_wav
-7. fan_1_hour_wav
-8. two_channels_wav
-9. zero_wav (null_wav)
-10. 1_hour_wav
+3. mult_wav
+4. cut_wav
+5. fan_1_hour_wav
+6. two_channels_wav
+7. zero_wav (null_wav)
+8. 1_hour_wav
   
 ### Compile
 make <program_name>  

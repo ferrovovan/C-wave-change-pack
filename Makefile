@@ -5,8 +5,8 @@ SRCDIR = source
 BINDIR = build
 
 # Правила компиляции для каждой цели
-boosted_wav:
-	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav.out $(SRCDIR)/boosted_wav.c
+#boosted_wav:
+#	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav.out $(SRCDIR)/boosted_wav.c
 
 concat_wav:
 	$(CC) $(CFLAGS) -o $(BINDIR)/concat_wav.out $(SRCDIR)/concat_wav.c
@@ -14,8 +14,8 @@ concat_wav:
 mult_wav:
 	$(CC) $(CFLAGS) -o $(BINDIR)/mult_wav.out $(SRCDIR)/mult_wav.c
 
-slowed_wav:
-	$(CC) $(CFLAGS) -o $(BINDIR)/slowed_wav.out $(SRCDIR)/slowed_wav.c
+#slowed_wav:
+#	$(CC) $(CFLAGS) -o $(BINDIR)/slowed_wav.out $(SRCDIR)/slowed_wav.c
 
 wav_info:
 	$(CC) $(CFLAGS) -o $(BINDIR)/wav_info.out $(SRCDIR)/wav_info.c
@@ -30,8 +30,8 @@ two_channels_wav:
 	$(CC) $(CFLAGS) -o $(BINDIR)/two_channels_wav.out $(SRCDIR)/two_channels_wav.c
 
 
-SINGLE_TARGETS := boosted_wav concat_wav mult_wav slowed_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav
-
+SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav
+# boosted_wav slowed_wav
 
 
 1_hour_wav:
