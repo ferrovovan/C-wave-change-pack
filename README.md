@@ -5,24 +5,24 @@
 Programs to read, change wave files, on C language.  
   
 Avaible programs:
-1. wav_info
-2. concat_wav
-3. mult_wav
-4. cut_wav
-5. fan_1_hour_wav
-6. two_channels_wav
-7. zero_wav (null_wav)
-8. 1_hour_wav
+- wav_info
+- concat_wav
+- mult_wav
+- cut_wav
+- fan_1_hour_wav
+- two_channels_wav
+- zero_wav (null_wav)
+- 1_hour_wav
   
-### Compile
-make <program_name>  
-Examples:
+### Compiling
+Move into **root** directory and use command `make <program_name>`, where *<program_name>* is string from *Avaible programs* list. It compiles program in **build** directory.   
+For example command
 ```
-make boosted_wav
 make cut_wav
 ```
+create executible file *cut_wav* in **build** directory (*cut_wav.exe* on windows).  
 
-### Examples (exampleti gratia) Usage
+### How to use?
 Cut fragment (start 3, end 6 in seconds)
 ```
 ./cut_wav.out -i in.wav --start 3 --end 6 -o out.wav
