@@ -46,16 +46,20 @@ int main(int argc, char *argv[]) {
 // Открытие файлов
 	FILE *outputFile = fopen(output_file, "wb");
 	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
+		printf("Ошибка открытия выходного файла.\n");
+		return EXIT_FAILURE;
 	}
 
 // Валидация
 	double time = HHMMSS_to_seconds(expected_duration);
+	if( time == -1 ){
+		printf("Неверный формат %s\n", expected_duration);
+		return EXIT_FAILURE;
+	}
 
 // Передача аргументов в функцию
 	zero_wav_file(outputFile, time);
 
 	fclose(outputFile);
-
 	return EXIT_SUCCESS;
 }
