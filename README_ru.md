@@ -94,12 +94,15 @@ make cut_wav
 ```
 В out.wav будет 3 последовательных sample_in.wav
   
+  
 - cut_wav  
+-o <выходной_файл> -d <длительность>   
+длительность записывается в `HH:MM:SS.MS` формате.  
 Пример:  
 ```
-./cut_wav -i in.wav --start 3 --end 6 -o out.wav
+./build/cut_wav -i "samples/TADC Episode 2 Soundtrak - Somebody Real.wav"   -e 01:25 --output "first part.wav"
 ```
-Cut fragment (start 3, end 6 in seconds)
+Вырезает фрагмент из *TADC Episode 2 Soundtrak - Somebody Real.wav* в *first part.wav*, начиная с нулевой секунды, заканчивая 1 минутой 25 секунд.  
 
 
 - two_channels_wav  
@@ -107,7 +110,7 @@ Cut fragment (start 3, end 6 in seconds)
 ```
 ./two_channels_wav --input samples/sample_in.wav -o stereo.wav
 ```
-stereo.wav - стерео звук, в отличие от sample_in.wav с моно.  
+*stereo.wav* - стерео звук, в отличие от *sample_in.wav* с моно.  
   
 - zero_wav (null_wav)  
 -o <выходной_файл> -d <длительность>   
@@ -116,7 +119,7 @@ stereo.wav - стерео звук, в отличие от sample_in.wav с мо
 ```
 ./build/zero_wav -o null.wav -d 6:5.43
 ```
-Создаёт файл пустой файл, длительностью 6 минут 5 секунд + 43 сотых секунды.  
+Создаёт файл пустой wav-файл *null.wav*, длительностью 6 минут 5 секунд + 43 сотых секунды.  
   
 - form_pitch  
 <название выходного файла> <Частота> <амплитуда (громкость)> <длительность в секундах>  
@@ -124,4 +127,4 @@ stereo.wav - стерео звук, в отличие от sample_in.wav с мо
 ```
 ./form_pitch A.wav 440.00 0.5 1
 ```
-Создаёт ноту частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0.5 (какая-то громкость).  
+Создаёт волну частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0.5 (какая-то громкость).  
