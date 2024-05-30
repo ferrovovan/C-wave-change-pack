@@ -4,32 +4,49 @@ CFLAGS = -Wall -Wextra -std=c99 -o2
 SRCDIR = source/programs
 BINDIR = build
 
+OS := $(shell uname)
+
+postfix = 
+
+ifeq ($(OS), Linux)
+    # Команды для Linux
+endif
+
+ifeq ($(OS), Darwin)
+    # Команды для macOS
+endif
+
+ifeq ($(OS), Windows_NT)
+	postfix = .exe
+endif
+
+
 INCLUDE_DIRS = -Isource/libraries
 
 # Правила компиляции для каждой цели
 #boosted_wav:
-#	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav.out $(SRCDIR)/boosted_wav.c
+#	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav$(postfix) $(SRCDIR)/boosted_wav.c
 
 concat_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/concat_wav.out $(SRCDIR)/concat_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/concat_wav$(postfix) $(SRCDIR)/concat_wav.c
 
 mult_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/mult_wav.out $(SRCDIR)/mult_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/mult_wav$(postfix) $(SRCDIR)/mult_wav.c
 
 #slowed_wav:
-#	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/slowed_wav.out $(SRCDIR)/slowed_wav.c
+#	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/slowed_wav$(postfix) $(SRCDIR)/slowed_wav.c
 
 wav_info:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info.out $(SRCDIR)/wav_info.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
 
 cut_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_wav.out $(SRCDIR)/cut_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_wav$(postfix) $(SRCDIR)/cut_wav.c
 
 fan_1_hour_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/fan_1_hour_wav.out $(SRCDIR)/fan_1_hour_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/fan_1_hour_wav$(postfix) $(SRCDIR)/fan_1_hour_wav.c
 
 two_channels_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/two_channels_wav.out $(SRCDIR)/two_channels_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/two_channels_wav$(postfix) $(SRCDIR)/two_channels_wav.c
 
 
 SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav
@@ -37,13 +54,13 @@ SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_chann
 
 
 1_hour_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/1_hour_extender.out $(SRCDIR)/1_hour_wav/1_hour_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/1_hour_extender$(postfix) $(SRCDIR)/1_hour_wav/1_hour_wav.c
 
 zero_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav.out $(SRCDIR)/null_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav$(postfix) $(SRCDIR)/null_wav.c
 
 null_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav.out $(SRCDIR)/null_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav$(postfix) $(SRCDIR)/null_wav.c
 
 all: $(SINGLE_TARGETS) 1_hour_wav
 
