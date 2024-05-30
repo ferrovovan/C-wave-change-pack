@@ -23,7 +23,8 @@ endif
 
 INCLUDE_DIRS = -Isource/libraries
 
-# Правила компиляции для каждой цели
+wav_info:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
 #boosted_wav:
 #	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav$(postfix) $(SRCDIR)/boosted_wav.c
 
@@ -36,8 +37,6 @@ mult_wav:
 #slowed_wav:
 #	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/slowed_wav$(postfix) $(SRCDIR)/slowed_wav.c
 
-wav_info:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
 
 cut_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_wav$(postfix) $(SRCDIR)/cut_wav.c
@@ -47,6 +46,9 @@ fan_1_hour_wav:
 
 two_channels_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/two_channels_wav$(postfix) $(SRCDIR)/two_channels_wav.c
+
+form_pitch_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/form_pitch_wav$(postfix) $(SRCDIR)/form_pitch_wav.c
 
 
 SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav

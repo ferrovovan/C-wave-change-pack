@@ -64,6 +64,7 @@ make cut_wav
 Для Windows: `<program_name>.exe [параметры]`  
 Для Linux: `./<program_name> [параметры]`  
 Если параметры не заданы, выводится справка по использованию.  
+Все примеры указаны для Linux (отличаются './').
   
 Параметры программ:
 - wav_info  
@@ -92,19 +93,35 @@ make cut_wav
 ./mult_wav -i samples/sample_in.wav --count 3 --output out.wav
 ```
 В out.wav будет 3 последовательных sample_in.wav
-- cut_wav
+  
+- cut_wav  
 Пример:  
-Cut fragment (start 3, end 6 in seconds)
 ```
 ./cut_wav -i in.wav --start 3 --end 6 -o out.wav
 ```
-Information about wav-file
+Cut fragment (start 3, end 6 in seconds)
 
-Create tune (there A tune, 1 second duration)
+
+- two_channels_wav  
+Пример:  
+```
+./two_channels_wav --input samples/sample_in.wav -o stereo.wav
+```
+stereo.wav - стерео звук, в отличие от sample_in.wav с моно.  
+  
+- zero_wav (null_wav)  
+-o <выходной_файл> -d <длительность>   
+длительность записывается в `HH:MM:SS.MS` формате.  
+Пример:  
+```
+./build/zero_wav -o null.wav -d 6:5.43
+```
+Создаёт файл пустой файл, длительностью 6 минут 5 секунд + 43 сотых секунды.  
+  
+- form_pitch  
+<название выходного файла> <Частота> <амплитуда (громкость)> <длительность в секундах>  
+Пример:  
 ```
 ./form_pitch A.wav 440.00 0.5 1
 ```
-Two channels wav
-```
-./two_channels_wav.out --input in.wav -o two_channels.wav
-```
+Создаёт ноту частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0.5 (какая-то громкость).  
