@@ -21,7 +21,7 @@
 - `1_hour_wav`
 - `fan_1_hour_wav`
 
-#### Описание программ:
+#### Описание программ
 - wav_info  
 Выводит информацию об wav-файле.
 
@@ -96,8 +96,8 @@ make cut_wav
   
   
 ##### cut_wav  
--o <выходной_файл> -d <длительность>   
-длительность записывается в `HH:MM:SS.MS` формате.  
+-i  <входной_файл> -o <выходной_файл> -s <начало обрезки> -e <конец обрезки>  
+Метки записывается в `HH:MM:SS.MS` формате.  
 Пример:  
 ```
 ./build/cut_wav -i "samples/TADC Episode 2 Soundtrak - Somebody Real.wav"   -e 01:25 --output "first part.wav"
@@ -106,6 +106,7 @@ make cut_wav
 
 
 ##### two_channels_wav  
+-i  <входной_файл> -o <выходной_файл>  
 Пример:  
 ```
 ./two_channels_wav --input samples/sample_in.wav -o stereo.wav
