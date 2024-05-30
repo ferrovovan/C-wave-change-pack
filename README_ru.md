@@ -74,22 +74,30 @@ make cut_wav
 ```
 Печатает информацию об заголовке test.wav  
   
-
 - concat_wav  
  <входной_файл1> <входной_файл2> <выходной_файл> - пути до файлов.  
+ <входной_файл1> и <входной_файл2> должны быть различны! Для повторения файла используйте mult_wav.  
 Пример:  
 ```
-./wav_info test.wav
+./concat_wav in1.wav in2.wav out.wav
 ```
-Печатает информацию об заголовке test.wav  
-
+Сконкатенирует wav-файлы in1.wav и in2.wav **одинакового формата** в out.wav .  
+  
+- mult_wav
+-i <входной_файл> - путь до входного файла.  
+-o <выходной_файл> - путь до выходного файла.  
+-c <повторения> - количество вхождений *входного* в *исходящий* файл ( >1 ).  
+Пример:  
+```
+./mult_wav -i samples/sample_in.wav --count 3 --output out.wav
+```
+В out.wav будет 3 последовательных sample_in.wav
 - cut_wav
 Пример:  
 Cut fragment (start 3, end 6 in seconds)
 ```
 ./cut_wav -i in.wav --start 3 --end 6 -o out.wav
 ```
-
 Information about wav-file
 
 Create tune (there A tune, 1 second duration)
