@@ -22,6 +22,7 @@ endif
 
 
 INCLUDE_DIRS = -Isource/libraries
+HOUR_WAV_DIR = $(SRCDIR)/1_hour_wav/
 
 wav_info:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
@@ -56,7 +57,8 @@ SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_chann
 
 
 1_hour_wav:
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/1_hour_extender$(postfix) $(SRCDIR)/1_hour_wav/1_hour_wav.c
+	$(MAKE) -C $(HOUR_WAV_DIR)
+	mv $(HOUR_WAV_DIR)1_hour_extender$(postfix)  $(BINDIR)/1_hour_extender$(postfix)
 
 zero_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav$(postfix) $(SRCDIR)/null_wav.c

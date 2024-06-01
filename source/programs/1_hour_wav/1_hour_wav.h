@@ -14,7 +14,7 @@ int counts;
 
 
 #include "read_args.c"
-#include "print_info.c"
+#include "print_info_func.c"
 #include "test_rep.c"
 #include "calculate_constans.c"
 #include "base.c"

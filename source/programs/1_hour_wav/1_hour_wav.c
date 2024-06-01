@@ -7,47 +7,46 @@ int main(int argc, char *argv[]) {
 
 	code = read_params(argc, argv, &info, &test_rep);
 	if (code != 0){
-		perror("Некорректное считывание параметров");
-		return -1;
+		printf("Некорректное считывание параметров.\n");
+		return EXIT_FAILURE;
 	}
 
 	inputFile = fopen(in, "rb");
 	if (inputFile == NULL) {
-		perror("Ошибка открытия входного файла");
-		return -1;
+		printf("Ошибка открытия входного файла.\n");
+		return EXIT_FAILURE;
 	}
 
 	code = calculate_constans();
 	if (code != 0)
-		return -1;
+		return EXIT_FAILURE;
 
 	if (info){
 		fclose(inputFile);
-
 		print_info();
 		printf("\nУспешная проверка параметров.\n");
-		return 0;
+		return EXIT_SUCCESS;
 	}
-	
-
 	// TODO:
-	if (test_rep != 0){
+	else if (test_rep){
 		test_rep_func(); // записывает только фрагмент повторения
-		return 0;
-	}
-
-	outputFile = fopen(out, "wb");
-	if (outputFile == NULL) {
-		perror("Ошибка открытия выходного файла");
 		fclose(inputFile);
-		return -1;
+		return EXIT_SUCCESS;
 	}
+	else{
+		outputFile = fopen(out, "wb");
+		if (outputFile == NULL) {
+			printf("Ошибка открытия выходного файла.\n");
+			fclose(inputFile);
+			return EXIT_FAILURE;
+		}
 
-	base();
+		base();
 
-	// Закрытие файлов
-	fclose(inputFile);	fclose(outputFile);
-	printf("\nУспешная запись.\n");
-	return 0;
+		// Закрытие файлов
+		fclose(inputFile);	fclose(outputFile);
+		printf("\nУспешная запись.\n");
+	}
+	return EXIT_SUCCESS;
 }
 
