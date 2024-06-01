@@ -2,26 +2,29 @@
 
 ![LOGO](https://github.com/ferrovovan/C-wave-change-pack/blob/main/Logo.png)  
 
-Набор кода для чтения и изменения wav файлов.  
-Использование данного программного обеспечения предполагает от пользователя  знания:  
+Использование данного программного обеспечения предполагает **от пользователя**  знания:  
 1. Что такое директория.
 2. Как открыть терминал в нужной директории.
 3. Как использовать исполняемый файл в терминале.
-4. Базового представления природы волновово файла.
-5. Применение следующей аналогии:  
+4. Применение следующей аналогии:  
   Если программа `./build/cut_wav` выводит справку  
 """  
   Параметры:  
    [ -i | --input ] <входной_файл>   
-   [ -s | --start ] <начало повтора>  
-   [ -e | --end ]   <конец повтора>  
+   [ -s | --start ] <начало>  
+   [ -e | --end ]   <конец>  
    [ -o | --output ] <выходной_файл>  
    --test   вывод статистики предполагаемого результата  
 """  
-  То использовать её нужно `./build/cut_wav -i <входной_файл> -s <начало повтора> -e <конец повтора> -o <выходной_файл>`  
+  То использовать её нужно шаблоном `./build/cut_wav -i <входной_файл> -s <начало обрезки> -e <конец обрезки> -o <выходной_файл>`.  
   
+  
+Набор кода для чтения и изменения wav файлов.  
 Программы для чтения и изменения wav-файлов.  
-Обрабатывают только PCM-совместимые форматы (смотри ![WAVE Specifications/rfc2361.txt](https://github.com/ferrovovan/C-wave-change-pack/blob/update_readme/WAVE%20Specifications/rfc2361.txt)  300 строку).  
+Обрабатывают только PCM-совместимые форматы (
+смотри ![WAVE Specifications/rfc2361.txt](https://github.com/ferrovovan/C-wave-change-pack/blob/update_readme/WAVE%20Specifications/rfc2361.txt)  300 строку, 
+или ![WAVE Specifications/Wave File Specifications.html](https://github.com/ferrovovan/C-wave-change-pack/blob/update_readme/WAVE%20Specifications/Wave%20File%20Specifications.html)
+).  
   
 Доступные программы:
 - `wav_info`
