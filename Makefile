@@ -1,25 +1,70 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -o2
 
-SRCDIR = source
+SRCDIR = source/programs
 BINDIR = build
 
-SINGLE_TARGETS := boosted_wav concat_wav mult_wav slowed_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav
+OS := $(shell uname)
 
-define compile_target
-$1:
-	$(CC) $(CFLAGS) -o $(BINDIR)/$1.out $(SRCDIR)/$1.c
-endef
+postfix = 
 
-# задание целей для одиночных файлов
-$(foreach target,$(SINGLE_TARGETS),$(eval $(call compile_target,$(target))))
+ifeq ($(OS), Linux)
+    # Команды для Linux
+endif
+
+ifeq ($(OS), Darwin)
+    # Команды для macOS
+endif
+
+ifeq ($(OS), Windows_NT)
+	postfix = .exe
+endif
+
+
+INCLUDE_DIRS = -Isource/libraries
+
+wav_info:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
+#boosted_wav:
+#	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav$(postfix) $(SRCDIR)/boosted_wav.c
+
+concat_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/concat_wav$(postfix) $(SRCDIR)/concat_wav.c
+
+mult_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/mult_wav$(postfix) $(SRCDIR)/mult_wav.c
+
+#slowed_wav:
+#	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/slowed_wav$(postfix) $(SRCDIR)/slowed_wav.c
+
+
+cut_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_wav$(postfix) $(SRCDIR)/cut_wav.c
+
+fan_1_hour_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/fan_1_hour_wav$(postfix) $(SRCDIR)/fan_1_hour_wav.c
+
+two_channels_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/two_channels_wav$(postfix) $(SRCDIR)/two_channels_wav.c
+
+form_pitch_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/form_pitch_wav$(postfix) $(SRCDIR)/form_pitch_wav.c
+
+
+SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav
+# boosted_wav slowed_wav
+
 
 1_hour_wav:
-	$(CC) $(CFLAGS) -o $(BINDIR)/1_hour_extender.out $(SRCDIR)/1_hour_wav/1_hour_wav.c
-zero_wav:
-	$(CC) $(CFLAGS) -o $(BINDIR)/zero_wav.out $(SRCDIR)/null_wav.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/1_hour_extender$(postfix) $(SRCDIR)/1_hour_wav/1_hour_wav.c
 
-all: $(SINGLE_TARGETS), 1_hour_wav
+zero_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav$(postfix) $(SRCDIR)/null_wav.c
+
+null_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/zero_wav$(postfix) $(SRCDIR)/null_wav.c
+
+all: $(SINGLE_TARGETS) 1_hour_wav
 
 clear:
 	rm -rf $(BINDIR)/*
