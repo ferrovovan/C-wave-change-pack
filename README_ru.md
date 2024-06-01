@@ -101,7 +101,7 @@ make cut_wav
 ```
 ./concat_wav in1.wav in2.wav out.wav
 ```
-Сконкатенирует wav-файлы in1.wav и in2.wav **одинакового формата** в out.wav .  
+Сконкатенирует wav-файлы *in1.wav* и *in2.wav* **одинакового формата** в *out.wav* .  
   
 ##### mult_wav
 -i <входной_файл> - путь до входного файла.  
@@ -111,7 +111,7 @@ make cut_wav
 ```
 ./mult_wav -i samples/sample_in.wav --count 3 --output out.wav
 ```
-В out.wav будет 3 последовательных sample_in.wav
+В *out.wav* будет 3 последовательных *sample_in.wav* .
   
   
 ##### cut_wav  
