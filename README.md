@@ -87,7 +87,7 @@ All examples are for Linux (differing `./`).
   
 Program parameters:
 ##### wav_info  
-<input_file> - path to the input file.  
+\<input_file\> - path to the input file.  
    
 Example:  
 ```
@@ -96,8 +96,8 @@ Example:
 Prints header information *Sidorovich.wav*  
   
 ##### concat_wav  
- <input_file1> <input_file2> <output_file> - paths to the files.  
- <input_file1> and <input_file2> must be different! To repeat a file, use mult_wav.  
+ \<input_file1\> \<input_file2\> \<output_file\> - paths to the files.  
+ \<input_file1\> and \<input_file2\> must be different! To repeat a file, use mult_wav.  
   
 Example:  
 ```
@@ -118,7 +118,7 @@ There will be 3 consecutive *Sidorovich.wav* in *out.wav* .
   
   
 ##### cut_wav  
--i <input_file> -o <output_file> -s <start of trimming> -e <end of trimming>  
+-i \<input_file\> -o \<output_file\> -s \<start of trimming\> -e \<end of trimming\>  
 Tags are written in `HH:MM:SS.MS` format.  
   
 Example:  
@@ -130,7 +130,7 @@ Cuts a fragment from *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] in
 [^1]: Need to convert to wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`  
 
 ##### two_channels_wav  
--i <input_file> -o <output_file>  
+-i <input_file> -o \<output_file\>  
 
 Example:  
 ```
@@ -139,7 +139,7 @@ Example:
 *stereo.wav* - stereo sound, as opposed to *Sidorovich.wav* with mono.  
   
 ##### zero_wav (null_wav)  
--o <output_file> -d <duration>   
+-o \<output_file\> -d \<duration\>   
 duration is written in `HH:MM:SS.MS` format.  
 
 Example:  
@@ -149,7 +149,7 @@ Example:
 Creates an empty wav file *null.wav*, lasting 6 minutes 5 seconds + 43 hundredths of a second.  
   
 ##### form_pitch  
-<output file name> <Frequency> <amplitude (volume)> <duration in seconds>  
+\<output file name\> \<Frequency\> \<amplitude (volume)\> \<duration in seconds\>  
 
 Example:  
 ```
@@ -158,7 +158,7 @@ Example:
 Creates a wave with a frequency of 440 Hertz (Note A), duration 1 second, volume 0.5 (some volume). 
 
 ##### 1_hour_wav
--i <input_file> -st <repeat start> -end <repeat end> ​​-md <overlay duration> -ed <expected duration> -o <output file>  
+-i \<input_file\> -st \<repeat start\> -end \<repeat end\> ​​-md \<overlay duration\> -ed \<expected duration\> -o \<output file\>  
 Adding --test prints the parameters of the intended output file.  
 
 Example:
