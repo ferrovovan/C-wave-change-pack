@@ -29,7 +29,12 @@ int read_params(int argc, char *argv[],
 	
 #pragma GCC diagnostic pop
 	
-	
+
+	if (argc == 1){
+		print_usage(argv[0]);
+		return -1;
+	}
+
 	for (int arg_num=1; arg_num < argc; ++arg_num){
 		CASE_ARG(in, "-i", 2)
 		else CASE_ARG(start_rep, "-st", 3)

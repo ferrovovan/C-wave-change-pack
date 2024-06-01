@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	code = calculate_constans();
-	if (code != 0)
+	if (code != EXIT_SUCCESS)
 		return EXIT_FAILURE;
 
 	if (info){

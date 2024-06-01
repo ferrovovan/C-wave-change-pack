@@ -32,13 +32,13 @@ int calculate_constans(){
 	
 	if (ptr_end_rep < ptr_start_rep){
 		printf("Конец повтора раньше начала. Увеличьте параметр -end или уменьшите параметр -st.\n");
-		return -1;
+		return EXIT_FAILURE;
 	}
 	repetition_bytes_count = (uint32_t)(ptr_end_rep - ptr_start_rep);
 	
 
 	if (mix_dlit != NULL) {
-		seconds = HHMMSS_to_seconds(end_rep);
+		seconds = HHMMSS_to_seconds(mix_dlit);
 		mix_bytes_count = seconds_to_bytes_count(seconds, 	&header_input);
 	} else {
 		mix_bytes_count = seconds_to_bytes_count(0, &header_input);
@@ -61,8 +61,8 @@ int calculate_constans(){
 	}
 	
 	if (expected_dur_bytes_count < header_input.chunkSize - ptr_start ){
-		perror("Ожидаемая длительность меньше длительности входного файла. Увеличьте параметр -ed.\n");
-		return -1;
+		printf("Ожидаемая длительность меньше длительности входного файла. Увеличьте параметр -ed.\n");
+		return EXIT_FAILURE;
 	}
 	
 
@@ -71,5 +71,5 @@ int calculate_constans(){
 
 	result_bytes = (beginning_bytes_count + repetition_bytes_count + end_bytes_count) + counts * new_rep_dlit_bytes_count;
 
-	return 0;
+	return EXIT_SUCCESS;
 }
