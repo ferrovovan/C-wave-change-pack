@@ -91,9 +91,9 @@ Program parameters:
    
 Example:  
 ```
-./build/wav_info samples/sample_in.wav
+./build/wav_info samples/Sidorovich.wav
 ```
-Prints header information *sample_in.wav*  
+Prints header information *Sidorovich.wav*  
   
 ##### concat_wav  
  <input_file1> <input_file2> <output_file> - paths to the files.  
@@ -112,9 +112,9 @@ Concatenates wav files *in1.wav* and *in2.wav* **of the same format** into *out.
   
 Example:  
 ```
-./mult_wav -i samples/sample_in.wav --count 3 --output out.wav
+./mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
 ```
-There will be 3 consecutive *sample_in.wav* in *out.wav* .
+There will be 3 consecutive *Sidorovich.wav* in *out.wav* .
   
   
 ##### cut_wav  
@@ -134,9 +134,9 @@ Cuts a fragment from *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] in
 
 Example:  
 ```
-./two_channels_wav --input samples/sample_in.wav -o stereo.wav
+./two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
 ```
-*stereo.wav* - stereo sound, as opposed to *sample_in.wav* with mono.  
+*stereo.wav* - stereo sound, as opposed to *Sidorovich.wav* with mono.  
   
 ##### zero_wav (null_wav)  
 -o <output_file> -d <duration>   
@@ -163,5 +163,9 @@ Adding --test prints the parameters of the intended output file.
 
 Example:
 ```
-./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 17 -end 01:35  -ed 3:30  -o test.wav -md 0.5
+./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 34.5 -end 01:33.2  -ed 3:28  -o middle.wav -md 2
 ```
+Start before 34.5 seconds   
+ \+ dublicate period from 34.5 to 01:33.2  twice (see `--test`)   
+ \+ end from 01:33.2 to 01:52.34   
+result = 3 minutes 45 seconds.

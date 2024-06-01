@@ -90,9 +90,9 @@ make cut_wav
 <входной_файл> - путь до входного файла.  
 Пример:  
 ```
-./build/wav_info samples/sample_in.wav
+./build/wav_info samples/Sidorovich.wav
 ```
-Печатает информацию из заголовка *sample_in.wav*  
+Печатает информацию из заголовка *Sidorovich.wav*  
   
 ##### concat_wav  
  <входной_файл1> <входной_файл2> <выходной_файл> - пути до файлов.  
@@ -109,9 +109,9 @@ make cut_wav
 -c <повторения> - количество вхождений *входного* в *исходящий* файл ( >1 ).  
 Пример:  
 ```
-./mult_wav -i samples/sample_in.wav --count 3 --output out.wav
+./mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
 ```
-В *out.wav* будет 3 последовательных *sample_in.wav* .
+В *out.wav* будет 3 последовательных *Sidorovich.wav* .
   
   
 ##### cut_wav  
@@ -129,9 +129,9 @@ make cut_wav
 -i <входной_файл> -o <выходной_файл>  
 Пример:  
 ```
-./two_channels_wav --input samples/sample_in.wav -o stereo.wav
+./two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
 ```
-*stereo.wav* - стерео звук, в отличие от *sample_in.wav* с моно.  
+*stereo.wav* - стерео звук, в отличие от *Sidorovich.wav* с моно.  
   
 ##### zero_wav (null_wav)  
 -o <выходной_файл> -d <длительность>   
@@ -148,7 +148,7 @@ make cut_wav
 ```
 ./form_pitch A.wav 440.00 0.5 1
 ```
-Создаёт волну частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0.5 (какая-то громкость).  
+Создаёт волну частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0,5 (какая-то громкость).  
 
 ##### 1_hour_wav
 -i <входной_файл> -st <начало повтора> -end <конец повтора> -md <длительность наложения> -ed <ожидаемая длительность> -o <выходной_файл>  
@@ -156,5 +156,9 @@ make cut_wav
 
 Пример:  
 ```
-./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 17 -end 01:35  -ed 3:30  -o test.wav -md 0.5
+./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 34.5 -end 01:33.2  -ed 3:28  -o middle.wav -md 2
 ```
+Начало до 34,5 секунды   
+ \+ дублируется промежуток с 34,5 до 01:33,2  два раза (смотрите --test)   
+ \+ конец с 01:33,2 до 01:52,34   
+= итого 3 минуты 45 секунд.
