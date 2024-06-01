@@ -1,4 +1,4 @@
-# C Wav-files change-programs pack
+# Набор программ для изменения wav-файлов на Си
 
 ![LOGO](https://github.com/ferrovovan/C-wave-change-pack/blob/main/Logo.png)  
 
