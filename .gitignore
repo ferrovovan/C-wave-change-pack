@@ -1,3 +1,4 @@
 build/             # Игнорировать директорию build
 build/**
-./*.wav
+*.wav
+!samples/*.wav

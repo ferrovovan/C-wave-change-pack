@@ -32,6 +32,7 @@
 - `mult_wav`
 - `cut_wav`
 - `two_channels_wav`
+- `form_pitch`
 - `zero_wav (null_wav)`
 - `1_hour_wav`
 - `fan_1_hour_wav`
@@ -50,7 +51,10 @@
 Вырезает промежуток заданной длины.
 
 - two_channels_wav  
-Конвертирует моно стерео.
+Конвертирует моно стерео.  
+
+- form_pitch  
+Записывает звуковую волну нужной частоты и амплитуды
 
 - zero_wav (null_wav)  
 Создаёт пустой wav-файл заданной длительностью.
@@ -122,7 +126,7 @@ make cut_wav
 [^1]: Нужно преобразовать в wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`
 
 ##### two_channels_wav  
--i  <входной_файл> -o <выходной_файл>  
+-i <входной_файл> -o <выходной_файл>  
 Пример:  
 ```
 ./two_channels_wav --input samples/sample_in.wav -o stereo.wav
@@ -145,3 +149,12 @@ make cut_wav
 ./form_pitch A.wav 440.00 0.5 1
 ```
 Создаёт волну частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0.5 (какая-то громкость).  
+
+##### 1_hour_wav
+-i <входной_файл> -st <начало повтора> -end <конец повтора> -md <длительность наложения> -ed <ожидаемая длительность> -o <выходной_файл>  
+Добавление --test выводит параметры предполагаемого выходного файла.  
+
+Пример:  
+```
+./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 17 -end 01:35  -ed 3:30  -o test.wav -md 0.5
+```
