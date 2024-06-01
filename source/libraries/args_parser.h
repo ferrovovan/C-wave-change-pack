@@ -104,10 +104,10 @@ void print_usage(){
 		printf(" [ -i | --input ] <входной_файл>  \n");
 	#endif
 	#ifdef ARG_START_TIME
-		printf(" [ -s | --start ] <начало повтора> \n");
+		printf(" [ -s | --start ] <начало> \n");
 	#endif
 	#ifdef ARG_END_TIME
-		printf(" [ -e | --end ]   <конец повтора> \n");
+		printf(" [ -e | --end ]   <конец> \n");
 	#endif
 	#ifdef ARG_MD_TIME
 		printf(" [ -m | --mix_duration ] <длительность наложения> \n");

@@ -112,9 +112,9 @@ make cut_wav
 Метки записывается в `HH:MM:SS.MS` формате.  
 Пример:  
 ```
-./build/cut_wav -i "samples/TADC Episode 2 Soundtrak - Somebody Real.wav"   -e 01:25 --output "first part.wav"
+./build/cut_wav -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav" -s 2:20 -e 3:5.2 -o "sonata-allegro.wav"
 ```
-Вырезает фрагмент из *TADC Episode 2 Soundtrak - Somebody Real.wav* в *first part.wav*, начиная с нулевой секунды, заканчивая 1 минутой 25 секунд.  
+Вырезает фрагмент из *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* в *sonata-allegro.wav*, начиная со второй минуты 20 секунды , заканчивая третьей минутой 5 секундой 2 десятыми секунды.  
 
 
 ##### two_channels_wav  
