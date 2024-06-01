@@ -114,9 +114,9 @@ make cut_wav
 ```
 ./build/cut_wav -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav" -s 2:20 -e 3:5.2 -o "sonata-allegro.wav"
 ```
-Вырезает фрагмент из *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav*[1^] в *sonata-allegro.wav*, начиная со второй минуты 20 секунды , заканчивая третьей минутой 5 секундой 2 десятыми секунды.  
+Вырезает фрагмент из *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] в *sonata-allegro.wav*, начиная со второй минуты 20 секунды , заканчивая третьей минутой 5 секундой 2 десятыми секунды.  
 
-[1^]: Нужно преобразовать в wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`
+[^1]: Нужно преобразовать в wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`
 
 ##### two_channels_wav  
 -i  <входной_файл> -o <выходной_файл>  
