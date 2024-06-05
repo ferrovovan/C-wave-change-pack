@@ -46,7 +46,7 @@ void bisect_wav(FILE *inputFile, FILE *outputFile){
 		fwrite(buffer2, 1, 2*bytesRead, outputFile);
 	}
 
-	printf("\nФайлы успешно объединены.\n");
+	printf("\nАудио успешно дополнено до стерео вида.\n");
 }
 
 

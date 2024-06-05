@@ -129,7 +129,7 @@ make cut_wav
 -i <входной_файл> -o <выходной_файл>  
 Пример:  
 ```
-./two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
+./build/two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
 ```
 *stereo.wav* - стерео звук, в отличие от *Sidorovich.wav* с моно.  
   
@@ -146,7 +146,7 @@ make cut_wav
 <название выходного файла> <Частота> <амплитуда (громкость)> <длительность в секундах>  
 Пример:  
 ```
-./build/form_pitch A.wav 440.00 0.5 1
+./build/form_pitch_wav A.wav 440.00 0.5 1
 ```
 Создаёт волну частотой 440 Герц (Нота Ля) длительностью 1 секунда, громкостью 0,5 (какая-то громкость).  
 

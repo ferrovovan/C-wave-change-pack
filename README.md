@@ -134,7 +134,7 @@ Cuts a fragment from *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] in
 
 Example:  
 ```
-./two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
+./build/two_channels_wav --input samples/Sidorovich.wav -o stereo.wav
 ```
 *stereo.wav* - stereo sound, as opposed to *Sidorovich.wav* with mono.  
   
