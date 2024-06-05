@@ -153,7 +153,7 @@ Creates an empty wav file *null.wav*, lasting 6 minutes 5 seconds + 43 hundredth
 
 Example:  
 ```
-./build/form_pitch A.wav 440.00 0.5 1
+./build/form_pitch_wav A.wav 440.00 0.5 1
 ```
 Creates a wave with a frequency of 440 Hertz (Note A), duration 1 second, volume 0.5 (some volume). 
 

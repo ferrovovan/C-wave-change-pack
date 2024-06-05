@@ -52,10 +52,10 @@ void write_pitch(FILE *outputFile, float duration){
 int main(int argc, char *argv[]) {
 	if (argc != 5) {
 		printf("Использование: %s <выходной_файл> <frequency> <amplitude (volume)> <time in seconds>\n", argv[0]);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
-	FILE *outputFile = fopen(argv[1], "rb");
+	FILE *outputFile = fopen(argv[1], "wb");
 	if (outputFile == NULL) {
 		printf("Ошибка открытия выходного файла.\n");
 		return EXIT_FAILURE;

@@ -26,6 +26,7 @@ HOUR_WAV_DIR = $(SRCDIR)/1_hour_wav/
 
 wav_info:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/wav_info$(postfix) $(SRCDIR)/wav_info.c
+
 #boosted_wav:
 #	$(CC) $(CFLAGS) -o $(BINDIR)/boosted_wav$(postfix) $(SRCDIR)/boosted_wav.c
 
@@ -52,7 +53,7 @@ form_pitch_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/form_pitch_wav$(postfix) $(SRCDIR)/form_pitch_wav.c
 
 
-SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav
+SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav form_pitch_wav
 # boosted_wav slowed_wav
 
 
