@@ -156,7 +156,7 @@ make cut_wav
 
 Пример:  
 ```
-./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 34.5 -end 01:33.2  -ed 3:28  -o middle.wav -md 2
+./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme.wav" -st 35.5 -end 48.3  -ed 3:28  -o "day after day after day.wav" -md 0.3
 ```
 Начало до 34,5 секунды   
  \+ дублируется промежуток с 34,5 до 01:33,2  два раза (смотрите --test)   

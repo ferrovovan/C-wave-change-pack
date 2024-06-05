@@ -112,7 +112,7 @@ Concatenates wav files *in1.wav* and *in2.wav* **of the same format** into *out.
   
 Example:  
 ```
-./mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
+./build/mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
 ```
 There will be 3 consecutive *Sidorovich.wav* in *out.wav* .
   
@@ -153,7 +153,7 @@ Creates an empty wav file *null.wav*, lasting 6 minutes 5 seconds + 43 hundredth
 
 Example:  
 ```
-./form_pitch A.wav 440.00 0.5 1
+./build/form_pitch A.wav 440.00 0.5 1
 ```
 Creates a wave with a frequency of 440 Hertz (Note A), duration 1 second, volume 0.5 (some volume). 
 
@@ -163,7 +163,7 @@ Adding --test prints the parameters of the intended output file.
 
 Example:
 ```
-./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme - MIDI Arrangement.wav" -st 34.5 -end 01:33.2  -ed 3:28  -o middle.wav -md 2
+./build/1_hour_extender -i "samples/The Amazing Digital Circus - Main Theme.wav" -st 35.5 -end 48.3  -ed 3:28  -o "day after day after day.wav" -md 0.3
 ```
 Start before 34.5 seconds   
  \+ dublicate period from 34.5 to 01:33.2  twice (see `--test`)   
