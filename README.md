@@ -101,7 +101,7 @@ Prints header information *Sidorovich.wav*
   
 Example:  
 ```
-./concat_wav in1.wav in2.wav out.wav
+./build/concat_wav samples/1.wav samples/2.wav out.wav
 ```
 Concatenates wav files *in1.wav* and *in2.wav* **of the same format** into *out.wav* .  
   
@@ -112,9 +112,9 @@ Concatenates wav files *in1.wav* and *in2.wav* **of the same format** into *out.
   
 Example:  
 ```
-./build/mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
+./build/mult_wav -i samples/Sidorovich.wav --count 3 --output "Wash now.wav"
 ```
-There will be 3 consecutive *Sidorovich.wav* in *out.wav* .
+There will be 3 consecutive *Sidorovich.wav* in *Wash now.wav* .
   
   
 ##### cut_wav  
@@ -127,7 +127,8 @@ Example:
 ```
 Cuts a fragment from *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] into *sonata-allegro.wav*, starting from the second minute 20 seconds, ending with the third minute 5 seconds 2 tenths of a second.  
 
-[^1]: Need to convert to wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`  
+[^1]: Need to convert to wav:   
+`ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`  
 
 ##### two_channels_wav  
 -i <input_file> -o \<output_file\>  

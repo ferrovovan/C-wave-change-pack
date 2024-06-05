@@ -99,7 +99,7 @@ make cut_wav
  <входной_файл1> и <входной_файл2> должны быть различны! Для повторения файла используйте mult_wav.  
 Пример:  
 ```
-./concat_wav in1.wav in2.wav out.wav
+./build/concat_wav samples/1.wav samples/2.wav out.wav
 ```
 Сконкатенирует wav-файлы *in1.wav* и *in2.wav* **одинакового формата** в *out.wav* .  
   
@@ -109,9 +109,9 @@ make cut_wav
 -c <повторения> - количество вхождений *входного* в *исходящий* файл ( >1 ).  
 Пример:  
 ```
-./mult_wav -i samples/Sidorovich.wav --count 3 --output out.wav
+./mult_wav -i samples/Sidorovich.wav --count 3 --output "Wash now.wav"
 ```
-В *out.wav* будет 3 последовательных *Sidorovich.wav* .
+В *Wash now.wav* будет 3 последовательных *Sidorovich.wav* .
   
   
 ##### cut_wav  
@@ -123,7 +123,8 @@ make cut_wav
 ```
 Вырезает фрагмент из *Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav* [^1] в *sonata-allegro.wav*, начиная со второй минуты 20 секунды , заканчивая третьей минутой 5 секундой 2 десятыми секунды.  
 
-[^1]: Нужно преобразовать в wav: `ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`
+[^1]: Нужно преобразовать в wav:   
+`ffmpeg -i "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).ogg" "samples/Tchaikovsky - Piano Concerto 1 (B Flat Minor).wav"`
 
 ##### two_channels_wav  
 -i <входной_файл> -o <выходной_файл>  
