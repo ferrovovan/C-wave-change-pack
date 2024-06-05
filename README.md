@@ -74,6 +74,11 @@ Example command:
 make cut_wav
 ```
 This will create the *cut_wav* executable in the **build** directory (*cut_wav.exe* on Windows).  
+  
+Or compile all programs at once!
+```
+make all
+```
 
 ### How to use?
 1. Compile the selected program.
@@ -82,6 +87,7 @@ This will create the *cut_wav* executable in the **build** directory (*cut_wav.e
 4. Write a command using the template:  
 For Windows: `<program_name>.exe [options]`  
 For Linux: `./<program_name> [options]`  
+  
 If the parameters are not specified, help for use is displayed.  
 All examples are for Linux (differing `./`).  
   
@@ -103,7 +109,7 @@ Example:
 ```
 ./build/concat_wav samples/1.wav samples/2.wav out.wav
 ```
-Concatenates wav files *in1.wav* and *in2.wav* **of the same format** into *out.wav* .  
+Concatenates wav files *1.wav* and *2.wav* **of the same format** into *out.wav* .  
   
 ##### mult_wav
 -i <input_file> - path to the input file.  
