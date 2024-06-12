@@ -31,6 +31,7 @@ Available programs:
 - `concat_wav`
 - `mult_wav`
 - `cut_wav`
+- `cut_inside_out_wav`
 - `two_channels_wav`
 - `form_pitch`
 - `zero_wav (null_wav)`
@@ -49,6 +50,9 @@ Concatenates a wav file with itself.
 
 - cut_wav  
 Cuts a gap of specified length.
+
+- cut_inside_out_wav  
+Cut inside fragment out, with smooth transition possibility (parametr -m).  
 
 - two_channels_wav  
 Converts mono to stereo.  

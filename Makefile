@@ -52,8 +52,11 @@ two_channels_wav:
 form_pitch_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/form_pitch_wav$(postfix) $(SRCDIR)/form_pitch_wav.c
 
+cut_inside_out_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_inside_out_wav$(postfix) $(SRCDIR)/cut_inside_out_wav.c
 
-SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav form_pitch_wav
+
+SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav form_pitch_wav cut_inside_out_wav
 # boosted_wav slowed_wav
 
 
