@@ -55,6 +55,9 @@ form_pitch_wav:
 cut_inside_out_wav:
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/cut_inside_out_wav$(postfix) $(SRCDIR)/cut_inside_out_wav.c
 
+insert_wav:
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $(BINDIR)/insert_wav$(postfix) $(SRCDIR)/insert_wav.c
+
 
 SINGLE_TARGETS := mult_wav concat_wav wav_info cut_wav  fan_1_hour_wav two_channels_wav zero_wav null_wav form_pitch_wav cut_inside_out_wav
 # boosted_wav slowed_wav

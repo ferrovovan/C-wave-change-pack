@@ -37,6 +37,7 @@ Available programs:
 - `zero_wav (null_wav)`
 - `1_hour_wav`
 - `fan_1_hour_wav`
+- `insert_wav`
 
 #### Description of programs
 - wav_info  
@@ -53,6 +54,9 @@ Cuts a gap of specified length.
 
 - cut_inside_out_wav  
 Cut inside fragment out, with smooth transition possibility (parametr -m).  
+
+- insert_wav  
+Insert *second* into *first* audio.  
 
 - two_channels_wav  
 Converts mono to stereo.  
